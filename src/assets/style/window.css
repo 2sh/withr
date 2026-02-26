@@ -1,0 +1,109 @@
+.window-overlay
+{
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  background-color: #28282b90;
+}
+
+.window-section
+{
+  display: flex;
+  justify-content: center;
+}
+
+.window-box
+{
+  position: absolute;
+  top: 200px;
+  width: 400px;
+  background-color: #28282b;
+  border: 1px solid white;
+}
+
+@media only screen and (max-width: 400px) {
+  .window-box
+  {
+    width: auto;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+  }
+}
+
+.window-header
+{
+  border-bottom: 1px solid white;
+  display: flex;
+  justify-content: space-between;
+  height: 35px;
+}
+
+.window-header p
+{
+  margin: 0;
+  padding: 5px 10px;
+  font-size: 18px;
+}
+
+.window-close-button
+{
+  background-color: #333;
+  border: 0;
+  margin: 0;
+  border-left: 1px solid white;
+  color: white;
+  width: 35px;
+  height: 35px;
+  cursor: pointer;
+}
+
+.window-close-button:hover
+{
+  background-color: #3a3a3a;
+}
+
+.window-content
+{
+  padding: 5px;
+}
+
+.window-search-input
+{
+  display: flex;
+}
+
+.window-search-input input
+{
+  flex-grow: 1;
+  font-size: 18px;
+}
+
+.window-footer
+{
+  padding: 5px;
+  border-top: 1px solid white;
+}
+
+.window-search-results
+{
+  height: 400px;
+  overflow-y: auto;
+  margin: 5px;
+}
+
+.window-search-result
+{
+  background-color: #333;
+  margin-bottom: 5px;
+  padding: 4px;
+  cursor: pointer;
+}
+
+.window-search-result:hover
+{
+  background-color: #3a3a3a;
+}
