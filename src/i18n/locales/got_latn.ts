@@ -1,6 +1,11 @@
-import type { longShortNarrowName, PrecipitationSymbols, TempSymbols, WindSpeedSymbols } from "./types"
+import type {
+  LongShortNarrowName,
+  PrecipitationSymbols,
+  TempSymbols,
+  WindSpeedSymbols
+} from "../../types"
 
-export const weekdays: longShortNarrowName[] = [
+const weekdays: LongShortNarrowName[] = [
   {
     long: "Sunnons daga",
     short: "Sun",
@@ -38,13 +43,13 @@ export const weekdays: longShortNarrowName[] = [
   },
 ]
 
-export const today: longShortNarrowName = {
+const today: LongShortNarrowName = {
   long: "Himma daga",
   short: "Him",
   narrow: "H",
 }
 
-export const months: longShortNarrowName[] = [
+const months: LongShortNarrowName[] = [
   {
     long: "Jānuāreis",
     short: "Jān",
@@ -107,7 +112,7 @@ export const months: longShortNarrowName[] = [
   },
 ]
 
-export const weatherCodeDescription: { [weatherCode: number]: string | {[condition: string]: string} } = {
+const weatherCodeDescription: { [weatherCode: number]: string | {[condition: string]: string} } = {
   0: {
     day: "Bairht",
     night: "Himins skeirs",
@@ -154,25 +159,49 @@ export const weatherCodeDescription: { [weatherCode: number]: string | {[conditi
   99: "Þeihwo miþ hagla", // "Thunderstorm with hail"
 }
 
-export const compassDirections =
+const compassDirections =
   ["N", "NNA", "NA", "ANA",
    "A", "ASA", "SA", "SSA", // austra
    "S", "SSW", "SW", "WSW",
    "W", "WNW", "NW", "NNW"]
 
-export const tempSymbols: TempSymbols = {
+const tempSymbols: TempSymbols = {
   celsius: 'C',
   fahrenheit: 'F',
 }
 
-export const windSpeedSymbols: WindSpeedSymbols = {
+const windSpeedSymbols: WindSpeedSymbols = {
   kmh: " km/h",
   ms: " m/s",
   mph: " mph",
   kn: " Knots",
 }
 
-export const precipitationSymbols: PrecipitationSymbols = {
+const precipitationSymbols: PrecipitationSymbols = {
   mm: " mm",
   inch: " in",
+}
+
+export default {
+  today,
+  weekdays,
+  months,
+  weatherCodeDescription,
+  compassDirections,
+  tempSymbols,
+  windSpeedSymbols,
+  precipitationSymbols,
+
+  ui:
+  {
+    weather_in_gothic: 'Wiþr in Gutrazdai',
+    now_in: "Nū in",
+    now: "Nū",
+    humidity: 'Qrammiþa Luftaus',
+    precipitation: 'Mitadjo Rignis',
+    uv_index: 'Wairþ UV',
+    apparent_temp: 'Ufkunnaiþ',
+    am: 'a.m.',
+    pm: 'p.m.',
+  }
 }

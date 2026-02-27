@@ -1,5 +1,3 @@
-import type { RemovableRef } from "@vueuse/core"
-
 type ArrayObject<Type> = {
   [Property in keyof Type]: Type[Property][]
 }
@@ -41,14 +39,14 @@ export type WeatherData = {
 }
 
 
-export type longShortNarrowName = {
+export type LongShortNarrowName = {
   long: string,
   short: string,
   narrow: string,
 }
 
 export type WithrDay = {
-  title: longShortNarrowName,
+  title: string,
   tempMax: string,
   tempMin: string,
   imageUrl: string,

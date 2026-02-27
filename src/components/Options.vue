@@ -4,12 +4,6 @@ import type {
   WithrOptions,
 } from '../types'
 
-defineProps({
-  title: String,
-  value: Number
-})
-defineEmits(['update:title', 'update:value'])
-
 const options = defineModel<WithrOptions>()
 const emit = defineEmits(['close'])
 

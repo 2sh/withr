@@ -1,12 +1,9 @@
 <script setup lang="ts">
 
 import type {
-  WithrOptions,
-  TempSymbols,
   WeatherData,
   WeatherDataHour,
   WeatherDataHourly,
-  WindSpeedSymbols,
   WithHourSimple,
   WithrDay,
   WithrHour,
@@ -14,7 +11,6 @@ import type {
   TempUnit,
   WindSpeedUnit,
   GothicNumeralMode,
-  PrecipitationSymbols,
   PrecipitationUnit
 } from '../types'
 
@@ -26,30 +22,22 @@ import {
 } from 'vue'
 
 import {
-  compassDirections,
-  months,
-  precipitationSymbols,
-  tempSymbols,
-  today,
-  weatherCodeDescription,
-  weekdays,
-  windSpeedSymbols,
-} from '../naming'
-import {
   determineUnits,
   getOwmImageUrl
 } from '../weather_tools'
 import {
-  fromLatin,
   toGothicNumerals
 } from '../transliterate'
 
 
 import Options from '../components/Options.vue'
 import Search from '../components/Search.vue'
-import { toReactive, useLocalStorage } from '@vueuse/core'
+import { useLocalStorage } from '@vueuse/core'
 import { useRoute } from 'vue-router'
 import router from '@/router'
+
+import { useTranslation } from "i18next-vue";
+const { i18next, t } = useTranslation();
 
 const showOptions = ref(false)
 
@@ -79,6 +67,13 @@ let dataPrecipitationUnit: PrecipitationUnit | null = null
 const currentTime = computed(() => data.value ? new Date(data.value.current.time) : null)
 
 const isLoading = ref(false)
+
+function setLanguage()
+{
+  i18next.changeLanguage(isGothicScript.value ? 'got-Goth' : 'got-Latn')
+}
+setLanguage()
+watch(isGothicScript, setLanguage)
 
 /*
 function getCurrentTimeFromOffset(offset: number)
@@ -158,15 +153,15 @@ function formatSpeed(value: number | undefined)
   const rValue = Math.round(value)
   const fValue = actualGothicNumeralMode.value == 'full'
     ? toGothicValue(rValue) : rValue.toString()
-  return fValue + windSpeedSymbols[dataWindSpeedUnit!] || ''
+  return fValue + t('windSpeedSymbols.' + dataWindSpeedUnit) || ''
 }
 
 function formatCompassDirection(value: number | undefined)
 {
   if (typeof value === 'undefined') return ''
   const index = Math.round(((value %= 360) < 0 ? value + 360 : value) / 22.5) % 16
-  const direction = compassDirections[index] || ''
-  const fValue = !isGothicScript.value ? direction : `<span class='overline'>${fromLatin(direction)}</span>`
+  const direction = t('compassDirections.' + index) || ''
+  const fValue = !isGothicScript.value ? direction : `<span class='overline'>${direction}</span>`
   return fValue
 }
 
@@ -176,7 +171,7 @@ function formatPrecipitation(value: number | undefined)
   const rValue = Math.round(value)
   const fValue = actualGothicNumeralMode.value == 'full'
     ? toGothicValue(rValue) : rValue.toString()
-  return fValue + precipitationSymbols[precipitationUnit.value] || ''
+  return fValue + t('precipitationSymbols.' + precipitationUnit.value) || ''
 }
 
 function formatHour(hour: Date)
@@ -193,15 +188,11 @@ function formatHour(hour: Date)
   const h = (hours % 12) || 12
   const fh = actualGothicNumeralMode.value == 'none'
     ? h : toGothicValue(h)
-  const amPm = !isGothicScript.value
-    ? (isPm ? 'p.m.' : 'a.m.')
-    : `<span class='overline'>${fromLatin(isPm ? 'pm' : 'am')}</span>`
-  return fh + ' ' + amPm
-}
-
-function formatText(text: string)
-{
-  return !isGothicScript.value ? text : fromLatin(text)
+  const amPm = isPm ? t('ui.am') : t('ui.pm')
+  const fAmPm = !isGothicScript.value
+    ? amPm
+    : `<span class='overline'>${amPm}</span>`
+  return fh + ' ' + fAmPm
 }
 
 function getDays()
@@ -211,7 +202,8 @@ function getDays()
   for (let i=0; i<7; i++)
   {
     const day = new Date(data.value.daily.time[i]! + 'T00:00:00')
-    const title = i == 0 ? today : weekdays[day.getDay()]!
+    const title = i == 0
+      ? t('today.long') : t(`weekdays.${day.getDay()}.long`)
     days.push({
       title,
       tempMax: formatTemp(data.value.daily.temperature_2m_max[i]),
@@ -224,11 +216,8 @@ function getDays()
 
 function getDescription(weatherCode: number, isDay: boolean)
 {
-  const desc = weatherCodeDescription[weatherCode]
-  return (
-    typeof desc === "string" ? desc :
-    typeof desc === "undefined" ? '?' :
-    isDay ? desc.day : desc.night) || '?'
+  const desc = t("weatherCodeDescription." + weatherCode, {context: isDay ? 'day' : 'night'})
+  return desc
 }
 
 function getValue<Type>(value: Type|Type[], index: number)
@@ -280,11 +269,9 @@ function formatDateTime(date: Date)
     ? fromLatin(weekday) : weekday
   */
   const dom = getGothicValue(date.getDate())
-  const monthName = months[date.getMonth()]!.long
-  const fMonthName = isGothicScript.value
-    ? fromLatin(monthName) : monthName
+  const monthName = t(`months.${date.getMonth()}.long`)
   const year = getGothicValue(date.getFullYear())
-  return `${dom} ${fMonthName} ${year}`
+  return `${dom} ${monthName} ${year}`
 
   /*
   const hours = options.is24hour ? get24Hour(date) : get12Hour(date)
@@ -469,7 +456,7 @@ const options = ref({
 <div id="withr" :lang="isGothicScript ? 'got-Goth' : 'got-Latn'">
   <div id="withr-header">
     <div class="withr-title">
-      <h1><RouterLink to="/">{{ formatText('Wiþr in Gutrazdai') }}</RouterLink></h1>
+      <h1><RouterLink to="/">{{ t('ui.weather_in_gothic') }}</RouterLink></h1>
     </div>
   </div>
   <div v-if="isLoading">
@@ -497,18 +484,18 @@ const options = ref({
       <div id="withr-top">
         <div id="withr-current" v-if="current">
           <div class="withr-current-title">
-            <span v-if="placeName">{{ formatText('Nū in') }} <span lang="en">{{ placeName }}</span></span>
-            <span v-else>{{ formatText('Nū') }}</span></div>
+            <span v-if="placeName">{{ t("ui.now_in") }} <span lang="en">{{ placeName }}</span></span>
+            <span v-else>{{ t("ui.now") }}</span></div>
           <div class="withr-current-content">
             <div class="withr-current-image">
               <img :src="current.imageUrl">
             </div>
             <div class="withr-current-details">
-              <div class="withr-current-temp"><span v-html="current.temp"></span>{{ tempSymbols[dataTempUnit!] }}</div>
+              <div class="withr-current-temp"><span v-html="current.temp"></span>{{ $t('tempSymbols.' + dataTempUnit) }}</div>
             </div>
           </div>
           <div class="withr-current-details-line">
-            <div class="withr-current-description">{{ formatText(current.description) }}</div>
+            <div class="withr-current-description">{{ current.description }}</div>
             <div class="withr-current-wind">
               <div class="withr-current-wind-direction" :style="{transform: `rotate(${180+current.windDirection}deg)`}">↑</div>
               <div class="withr-current-wind-compass-direction" v-html="current.windCompassDirection"></div>
@@ -525,7 +512,7 @@ const options = ref({
           <div :class="{ 'withr-dow-day': true,
               'withr-dow-day-selected': selectedDayIndex == index }"
               @click="selectedDayIndex = index">
-            <div class="withr-dow-title">{{ formatText(day.title.long) }}</div>
+            <div class="withr-dow-title">{{ day.title }}</div>
             <div class="withr-dow-lower">
               <div class="withr-dow-image">
                 <img :src="day.imageUrl">
@@ -548,7 +535,7 @@ const options = ref({
               <div class="withr-hour-image">
                 <img :src="hour.imageUrl">
               </div>
-              <div class="withr-hour-description">{{ formatText(hour.description) }}</div>
+              <div class="withr-hour-description">{{ hour.description }}</div>
             </div>
             <div>
               <div class="withr-hour-precipitation-probability" v-html="hour.precipitationProbability"></div>
@@ -565,22 +552,22 @@ const options = ref({
           </div>
           <div class="withr-hour-folded" v-if="hour.isFoldedSectionVisible">
             <div>
-              <div>{{ formatText('Ufkunnaiþ') }}</div>
+              <div>{{ $t("ui.apparent_temp") }}</div>
               <div class="withr-apparent-temp" v-html="hour.apparentTemp"></div>
             </div>
             <div>
-              <div>{{ formatText('Wairþ') }} UV</div>
+              <div>{{ $t("ui.uv_index") }}</div>
               <div class="withr-uv-index">
                 <span v-html="hour.uvIndex"></span>
                 <span :class="['withr-uv-index-' + hour.uvIndexRisk]"> ⬤</span>
               </div>
             </div>
             <div>
-              <div>{{ formatText('Mitadjo Rignis') }}</div>
+              <div>{{ $t("ui.precipitation") }}</div>
               <div class="withr-precipitation" v-html="hour.precipitation"></div>
             </div>
             <div>
-              <div>{{ formatText('Qrammiþa Luftaus') }}</div>
+              <div>{{ $t("ui.humidity") }}</div>
               <div class="withr-humidity" v-html="hour.humidity"></div>
             </div>
           </div>
