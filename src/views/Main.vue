@@ -900,7 +900,7 @@ h1
 
 .withr-dow-temp
 {
-  text-align: right;
+  text-align: center;
   white-space: nowrap;
 }
 
