@@ -27,7 +27,7 @@ export default {
   precipitationSymbols,
   ui:
   {
-    uvIndex: '𐍅𐌰𐌹𐍂𐌸 UV',
+    uv_index: '𐍅𐌰𐌹𐍂𐌸 UV',
     am: '𐌰𐌼',
     pm: '𐍀𐌼',
   }
