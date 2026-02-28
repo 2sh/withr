@@ -11,7 +11,8 @@ import type {
   TempUnit,
   WindSpeedUnit,
   GothicNumeralMode,
-  PrecipitationUnit
+  PrecipitationUnit,
+  ColorScheme
 } from '../types'
 
 import {
@@ -47,12 +48,32 @@ const is24hour = useLocalStorage('is_24_hour', false)
 const isGothicScript = useLocalStorage('is_gothic_script', true)
 const gothicNumeralMode = useLocalStorage<GothicNumeralMode>('gothic_numeral_mode', 'full')
 
-const tempUnit = useLocalStorage<TempUnit>('temp_unit', () =>
+const tempUnit = useLocalStorage<TempUnit>('temp_unit',
   determinedUnits.isFahrenheit ? 'fahrenheit' : 'celsius')
 const windSpeedUnit = useLocalStorage<WindSpeedUnit>('wind_speed_unit',
   determinedUnits.isImperial ? 'mph' : 'kmh')
 const precipitationUnit = useLocalStorage<PrecipitationUnit>('precipitation_unit',
   determinedUnits.isImperial ? 'inch' : 'mm')
+
+/* dark mode */
+
+const colorScheme = useLocalStorage<ColorScheme>('color_scheme',
+  document.documentElement.dataset.colorScheme == 'light' ? 'light' : 'dark'
+)
+
+window.matchMedia('(prefers-color-scheme: dark)')
+  .addEventListener('change', event => {
+    colorScheme.value = event.matches ? 'dark' : 'light';
+  });
+
+function setColorScheme()
+{
+  document.documentElement.dataset.colorScheme = colorScheme.value
+}
+watch(colorScheme, setColorScheme)
+setColorScheme()
+
+/* dark mode end */
 
 const lat = ref<number | null>(null)
 const long = ref<number | null>(null)
@@ -447,7 +468,8 @@ displayDateTime()
 
 const options = ref({
   is24hour, isGothicScript, gothicNumeralMode,
-  tempUnit, windSpeedUnit, precipitationUnit
+  tempUnit, windSpeedUnit, precipitationUnit,
+  colorScheme,
 })
 
 </script>
@@ -466,9 +488,9 @@ const options = ref({
     <div id="withr-init-page">
       <div id="withr-options-section">
         <div class="withr-options">
-          <button class="withr-search-button" @click="showSearch = true"></button>
-          <button class='withr-geolocate-button' @click="geolocate" v-if='isGeolocationAvailable' :disabled="geolocationLock"></button>
-          <button class='withr-options-button' @click="showOptions = !showOptions"></button>
+          <button class="withr-search-button" @click="showSearch = true"><div></div></button>
+          <button class='withr-geolocate-button' @click="geolocate" v-if='isGeolocationAvailable' :disabled="geolocationLock"><div></div></button>
+          <button class='withr-options-button' @click="showOptions = !showOptions"><div></div></button>
         </div>
       </div>
       <div v-if="!data" id="withr-location-links" lang="en">
@@ -590,7 +612,7 @@ const options = ref({
 <style>
 @font-face {
   font-family: 'Noto Sans Gothic';
-  src: url('../fonts/NotoSansGothic-Regular.woff2') format('woff2');
+  src: url('../assets/fonts/NotoSansGothic-Regular.woff2') format('woff2');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -598,15 +620,15 @@ const options = ref({
 
 body
 {
-  background-color: #28282b;
-  color: #f0f0f0;
+  background-color: var(--bg-color);
+  color: var(--text-color);
   margin: 0;
   padding: 0;
 }
 
 a
 {
-  color: #a7caff;
+  color: var(--link-color);
 }
 
 #footer
@@ -640,6 +662,7 @@ a
   border-image-slice: 1 5 1 5 fill;
   border-width: 1px 3px;
   border-style: solid;
+  filter: invert(var(--inverse));
 }
 </style>
 
@@ -703,18 +726,25 @@ h1
 {
   width: 35px;
   height: 35px;
+  background-color: var(--button-color);
+  border: 0;
+  margin: 5px;
+  cursor: pointer;
+  padding: 5px;
+}
+
+.withr-options button div
+{
+  width: 100%;
+  height: 100%;
   background-size: cover;
   background-position: center;
-  background-color: #333;
-  border: 5px solid #333;
-  margin: 4px;
-  cursor: pointer;
+  filter: invert(var(--inverse));
 }
 
 .withr-options button:hover
 {
-  background-color: #3a3a3a;
-  border-color: #3a3a3a;
+  background-color: var(--button-color-hover);
 }
 
 #withr-location-links
@@ -730,27 +760,27 @@ h1
   margin: 5px;
   text-align: center;
   padding: 10px;
-  background-color: #333;
+  background-color: var(--button-color);
   text-decoration: none;
   color: inherit;
 }
 
 #withr-location-links > a:hover
 {
-  background-color: #3a3a3a;
+  background-color: var(--button-color-hover);
 }
 
-.withr-geolocate-button
+.withr-geolocate-button div
 {
   background-image: url('../assets/images/pin.svg')
 }
 
-.withr-search-button
+.withr-search-button div
 {
   background-image: url('../assets/images/search.svg')
 }
 
-.withr-options-button
+.withr-options-button div
 {
   background-image: url('../assets/images/gear.svg')
 }
@@ -827,17 +857,16 @@ h1
   justify-content: center;
   padding-top: 10px;
 
-  background-color: #333;
-  color: #f0f0f0;
+  background-color: var(--button-color);
   cursor: pointer;
 
-  border-bottom: 4px solid #333;
+  border-bottom: 4px solid var(--button-color);
 }
 
 .withr-dow-day:hover
 {
-  background-color: #3a3a3a;
-  border-bottom-color: #3a3a3a;
+  background-color: var(--button-color-hover);
+  border-bottom-color: var(--button-color-hover);
 }
 
 .withr-dow-day-selected
@@ -903,14 +932,13 @@ h1
   flex-wrap: wrap;
   gap: 5px;
 
-  background-color: #333;
-  color: #f0f0f0;
+  background-color: var(--button-color);
   cursor: pointer;
 }
 
 .withr-hour:hover
 {
-  background-color: #3a3a3a;
+  background-color: var(--button-color-hover);
 }
 
 .withr-hour > div
@@ -974,7 +1002,6 @@ h1
 
 .withr-hour-fold-button
 {
-  color: white;
   margin-right: 4px;
   width: 10px;
   text-align: center;
@@ -991,7 +1018,7 @@ h1
 {
   text-align: center;
   flex: 1 1 0px;
-  background-color: #333;
+  background-color: var(--box-color);
   white-space: nowrap;
 }
 

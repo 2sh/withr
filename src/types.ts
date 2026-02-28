@@ -103,10 +103,13 @@ export interface PrecipitationSymbols {
 }
 export type PrecipitationUnit = keyof PrecipitationSymbols
 
+export type ColorScheme = 'dark' | 'light'
+
 export type WithrOptions = {
   isGothicScript: boolean,
   gothicNumeralMode: GothicNumeralMode,
   is24hour: boolean,
+  colorScheme: ColorScheme,
 
   tempUnit: TempUnit,
   windSpeedUnit: WindSpeedUnit,
