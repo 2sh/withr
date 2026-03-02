@@ -410,10 +410,11 @@ watch(() => route.params.location, () =>
 
 const isGeolocationAvailable = "geolocation" in navigator
 
-const handlePositionSuccess: PositionCallback = (position) =>
+const handlePositionSuccess: PositionCallback = async (position) =>
 {
   lat.value = position.coords.latitude
   long.value = position.coords.longitude
+  await getData()
   geolocationLock.value = false
 }
 
@@ -430,7 +431,12 @@ function geolocate()
   geolocationLock.value = true
   navigator.geolocation.getCurrentPosition(
     handlePositionSuccess,
-    handlePositionError
+    handlePositionError,
+    {
+      maximumAge: 10000,
+      timeout: 10000,
+      enableHighAccuracy:true,
+    }
   )
 }
 
