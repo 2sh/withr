@@ -112,8 +112,3 @@ function handleResultClick(index: number)
   </div>
 </div>
 </template>
-
-<style scoped>
-
-
-</style>

@@ -70,6 +70,14 @@
   padding: 5px;
 }
 
+.window-footer
+{
+  padding: 5px;
+  border-top: 1px solid white;
+}
+
+/* search */
+
 .window-search-input
 {
   display: flex;
@@ -79,12 +87,6 @@
 {
   flex-grow: 1;
   font-size: 18px;
-}
-
-.window-footer
-{
-  padding: 5px;
-  border-top: 1px solid white;
 }
 
 .window-search-results
@@ -105,4 +107,23 @@
 .window-search-result:hover
 {
   background-color: #3a3a3a;
+}
+
+/* form */
+
+.window-form-section
+{
+  margin: 5px 0;
+}
+
+.window-form-input-section
+{
+  display: flex;
+}
+
+.window-form-label
+{
+  width: 180px;
+  text-align: right;
+  margin-right: 5px;
 }
