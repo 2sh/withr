@@ -66,6 +66,23 @@ a
   color: var(--link-color);
 }
 
+sup
+{
+  vertical-align: top;
+  font-size: 12px;
+}
+
+sub
+{
+  vertical-align: bottom;
+  font-size: 12px;
+}
+
+.frac-div
+{
+  margin: 0 2px;
+}
+
 h1
 {
   margin: 0;

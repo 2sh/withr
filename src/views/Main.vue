@@ -140,10 +140,27 @@ async function getData()
   isLoading.value = false
 }
 
-function toGothicValue(value: number)
+function toGothicFractionalValue(value: number, denominator: null | number = null)
 {
-  const absValue = Math.abs(value)
-  const absGothicValue = absValue == 0 ? 0 : toGothicNumerals(absValue)
+  if (!denominator) return ''
+  const fractionalValue = Math.round((Math.abs(value) % 1) * denominator)
+  if (!fractionalValue) return ''
+
+  console.log(fractionalValue)
+  const gothicNumerator = toGothicNumerals(fractionalValue)
+  const gothicDenominator = toGothicNumerals(denominator)
+  return `<sup>${gothicNumerator}</sup><span class='frac-div'>&frasl;</span><sub>${gothicDenominator}</sub>`
+}
+
+function toGothicValue(value: number, denominator: null | number = null)
+{
+  const gothicFractionalValue = toGothicFractionalValue(value, denominator)
+
+  const absValue = Math.abs(Math.round(value))
+  const absGothicValue = absValue == 0
+    ? (gothicFractionalValue ? gothicFractionalValue : "0")
+    : toGothicNumerals(absValue) + ' ' + gothicFractionalValue
+
   const gothicValue = value < 0 ? `(${absGothicValue})` : absGothicValue
   const fValue = `·<span class='overline'>${gothicValue}</span>·`
   return fValue
@@ -190,9 +207,9 @@ function formatCompassDirection(value: number | undefined)
 function formatPrecipitation(value: number | undefined)
 {
   if (typeof value === 'undefined') return '?'
-  const rValue = Math.round(value)
+  const denominator = precipitationUnit.value == 'inch' ? 1000 : 10
   const fValue = actualGothicNumeralMode.value == 'full'
-    ? toGothicValue(rValue) : rValue.toString()
+    ? toGothicValue(value, denominator) : value.toString()
   return fValue + t('precipitationSymbols.' + precipitationUnit.value) || ''
 }
 
