@@ -8,6 +8,7 @@ import getI18n from './i18n'
 const i18next = getI18n()
 
 import './assets/style/main.css'
+import './assets/style/withr.css'
 import './assets/style/window.css'
 
 createApp(App)

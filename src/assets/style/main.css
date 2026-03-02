@@ -34,3 +34,107 @@
   --annotation-color: #999999;
   --inverse: 80%;
 }
+
+.no-wrap
+{
+  white-space: nowrap;
+}
+
+@font-face {
+  font-family: 'Noto Sans Gothic';
+  src: url('../assets/fonts/NotoSansGothic-Regular.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+body
+{
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  margin: 0;
+  padding: 0;
+}
+
+body:lang(got-Goth)
+{
+  font-family: 'Noto Sans Gothic', sans;
+}
+
+a
+{
+  color: var(--link-color);
+}
+
+h1
+{
+  margin: 0;
+}
+
+#header
+{
+  margin-top: 10px;
+}
+
+.header-title
+{
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.header-title a
+{
+  text-decoration: none;
+  color: inherit;
+}
+
+#footer
+{
+  margin: 7px 4px;
+  display: flex;
+  justify-content: space-between;
+  text-align: right;
+}
+
+.article
+{
+  width: 800px;
+  margin: 0 auto;
+  font-family: sans;
+  position: relative;
+}
+
+@media only screen and (max-width: 800px) {
+  .article
+  {
+    width: auto;
+  }
+}
+
+/* overline */
+
+.overline
+{
+  background-color: inherit;
+  color: inherit;
+  position: relative;
+  display: inline-block;
+  min-width: 10px;
+  text-align: center;
+}
+
+.overline::before
+{
+  display: block;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 1.1em;
+  height: 1px;
+  content: "\a0";
+  border-image-source: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAADCAYAAABF//VLAAAAAXNSR0IB2cksfwAAAARnQU1BAACxjwv8YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAAuIwAALiMBeKU/dgAAACpJREFUCNdj/PDhw38GVNAoICDQwIAFMGJRjBMw4pL48OFDAwMDQz2yGAASjgyihLgjBwAAAABJRU5ErkJggg==");
+  border-image-slice: 1 5 1 5 fill;
+  border-width: 1px 3px;
+  border-style: solid;
+  filter: invert(var(--inverse));
+}
