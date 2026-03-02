@@ -429,9 +429,9 @@ const isGeolocationAvailable = "geolocation" in navigator
 
 const handlePositionSuccess: PositionCallback = async (position) =>
 {
-  lat.value = position.coords.latitude
-  long.value = position.coords.longitude
-  await getData()
+  const lat = position.coords.latitude.toFixed(5)
+  const long = position.coords.longitude.toFixed(5)
+  router.replace(`/${lat},${long}`)
   geolocationLock.value = false
 }
 
