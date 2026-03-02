@@ -121,3 +121,12 @@ export function determineUnits(skip = false): DeterminedUnits
   }
   return { isFahrenheit: false, isImperial: false}
 }
+
+export const uvIndexRiskMapping: [number, string][] = [
+  [ 0, 'no-risk' ],
+  [ 1, 'low' ],
+  [ 3, 'moderate' ],
+  [ 6, 'high' ],
+  [ 8, 'very-high' ],
+  [ 11, 'extreme' ],
+]

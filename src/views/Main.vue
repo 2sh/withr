@@ -24,7 +24,8 @@ import {
 
 import {
   determineUnits,
-  getOwmImageUrl
+  getOwmImageUrl,
+  uvIndexRiskMapping
 } from '../weather_tools'
 import {
   toGothicNumerals
@@ -306,14 +307,7 @@ function formatDateTime(date: Date)
 
 }
 
-const uvIndexRiskMapping: [number, string][] = [
-  [ 0, 'no-risk' ],
-  [ 1, 'low' ],
-  [ 3, 'moderate' ],
-  [ 6, 'high' ],
-  [ 8, 'very-high' ],
-  [ 11, 'extreme' ],
-]
+
 
 function getHour(object: WeatherDataHour|WeatherDataHourly, index = -1): WithHourSimple
 {
