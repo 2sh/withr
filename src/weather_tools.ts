@@ -41,7 +41,7 @@ export function getOwmImageUrl(weatherCode: number, isDay: boolean)
 {
   const imageCode = (owmMapping[weatherCode] || 1).toString().padStart(2, '0')
   const dayNightCode = isDay ? 'd' : 'n'
-  return `http://openweathermap.org/img/wn/${imageCode}${dayNightCode}@2x.png`
+  return `https://openweathermap.org/img/wn/${imageCode}${dayNightCode}@2x.png`
 }
 
 const timezonesWithFahrenheit = [
