@@ -56,7 +56,7 @@ body
   padding: 0;
 }
 
-body:lang(got-Goth)
+.article:lang(got-Goth)
 {
   font-family: 'Noto Sans Gothic', sans;
 }
@@ -76,11 +76,6 @@ sub
 {
   vertical-align: bottom;
   font-size: 12px;
-}
-
-.frac-div
-{
-  margin: 0 2px;
 }
 
 h1
@@ -146,7 +141,7 @@ h1
   position: absolute;
   left: 0;
   right: 0;
-  bottom: 1.3em;
+  bottom: 1.1em;
   height: 1px;
   content: "\a0";
   border-image-source: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAADCAYAAABF//VLAAAAAXNSR0IB2cksfwAAAARnQU1BAACxjwv8YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAAuIwAALiMBeKU/dgAAACpJREFUCNdj/PDhw38GVNAoICDQwIAFMGJRjBMw4pL48OFDAwMDQz2yGAASjgyihLgjBwAAAABJRU5ErkJggg==");
