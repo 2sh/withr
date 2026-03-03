@@ -28,10 +28,10 @@ const emit = defineEmits(['close'])
       <div class="window-form-section">
         <div class="window-form-input-section">
           <div class="window-form-label">
-            Color Scheme
+            Theme
           </div>
           <div class="window-form-value">
-            <select v-model="options.colorScheme">
+            <select v-model="options.theme">
               <option value="dark">Dark</option>
               <option value="light">Light</option>
             </select>

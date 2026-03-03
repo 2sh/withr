@@ -12,7 +12,7 @@ import type {
   WindSpeedUnit,
   GothicNumeralMode,
   PrecipitationUnit,
-  ColorScheme
+  Theme
 } from '../types'
 
 import {
@@ -65,25 +65,20 @@ watch(isGothicScript, v =>
   document.body.setAttribute("lang", v ? 'got-Goth' : 'got-Latn')
 })
 
-/* dark mode */
+/* theme */
 
-const colorScheme = useLocalStorage<ColorScheme>('color_scheme',
-  document.documentElement.dataset.colorScheme == 'light' ? 'light' : 'dark'
+const theme = useLocalStorage<Theme>('theme',
+  document.documentElement.dataset.theme == 'light' ? 'light' : 'dark'
 )
 
-window.matchMedia('(prefers-color-scheme: dark)')
-  .addEventListener('change', event => {
-    colorScheme.value = event.matches ? 'dark' : 'light';
-  });
-
-function setColorScheme()
+function setTheme()
 {
-  document.documentElement.dataset.colorScheme = colorScheme.value
+  document.documentElement.dataset.theme = theme.value
 }
-watch(colorScheme, setColorScheme)
-setColorScheme()
+watch(theme, setTheme)
+setTheme()
 
-/* dark mode end */
+/* theme end */
 
 const lat = ref<number | null>(null)
 const long = ref<number | null>(null)
@@ -484,7 +479,7 @@ displayDateTime()
 const options = ref({
   is24hour, isGothicScript, gothicNumeralMode,
   tempUnit, windSpeedUnit, precipitationUnit,
-  colorScheme,
+  theme,
 })
 
 function setBodyClass(value: string | null, prefix: string)

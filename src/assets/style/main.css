@@ -16,7 +16,7 @@
   --annotation-color: #979797;
   --inverse: 0;
 }
-:root[data-color-scheme="light"] {
+:root[data-theme="light"] {
   color-scheme: light;
   --bg-color: #ffffff;
   --box-color: #f0f0f0;
