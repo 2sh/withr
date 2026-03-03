@@ -275,7 +275,7 @@
 .withr-hour .withr-condition-image
 {
   text-align: center;
-  margin: -5px 0;
+  margin: -10px -5px;
   height: 40px;
 }
 
@@ -446,8 +446,8 @@
   background-image: url('../images/conditions/snow.png')
 }
 
-.withr-section-thunderstorm .withr-condition-image,
-.withr-section-thunderstorm_hail .withr-condition-image
+.withr-section-condition-thunderstorm .withr-condition-image,
+.withr-section-condition-thunderstorm-hail .withr-condition-image
 {
   background-image: url('../images/conditions/thunderstorm.png')
 }
