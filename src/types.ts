@@ -57,7 +57,6 @@ export type WithHourSimple = {
 
   isFoldedSectionVisible: boolean,
 
-  description: string,
   conditionKey: string,
   isDay: boolean,
 

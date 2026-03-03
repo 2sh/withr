@@ -259,12 +259,6 @@ function getDays()
   return days
 }
 
-function getDescription(weatherCode: number, isDay: boolean)
-{
-  const desc = t("weatherCodeDescription." + weatherCode, {context: isDay ? 'day' : 'night'})
-  return desc
-}
-
 function getValue<Type>(value: Type|Type[], index: number)
 {
   return Array.isArray(value) ? value[index] : value
@@ -350,7 +344,6 @@ function getHour(object: WeatherDataHour|WeatherDataHourly, index = -1): WithHou
 
     isFoldedSectionVisible: false,
 
-    description: getDescription(weatherCode, isDay),
     conditionKey: owmKeyMapping[weatherCode]!,
     isDay,
 
@@ -560,7 +553,10 @@ watch(() => current.value ? current.value.isDay : null,
             </div>
           </div>
           <div class="withr-current-details-line">
-            <div class="withr-current-description">{{ current.description }}</div>
+            <div class="withr-current-description">{{
+              $t("conditionDescription." + current.conditionKey, {
+                context: current.isDay ? 'day' : 'night'
+              }) }}</div>
             <div class="withr-current-wind">
               <div class="withr-current-wind-direction" :style="{transform: `rotate(${180+current.windDirection}deg)`}">↑</div>
               <div class="withr-current-wind-compass-direction" v-html="current.windCompassDirection"></div>
@@ -600,7 +596,10 @@ watch(() => current.value ? current.value.isDay : null,
               <div class="withr-hour-title" v-html="hour.title"></div>
               <div class="withr-hour-temp" v-html="hour.temp"></div>
               <div class="withr-condition-image"></div>
-              <div class="withr-hour-description">{{ hour.description }}</div>
+              <div class="withr-hour-description">{{
+                $t("conditionDescription." + hour.conditionKey, {
+                  context: hour.isDay ? 'day' : 'night'
+                }) }}</div>
             </div>
             <div>
               <div class="withr-hour-precipitation-probability" v-html="hour.precipitationProbability"></div>

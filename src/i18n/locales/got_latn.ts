@@ -112,51 +112,50 @@ const months: LongShortNarrowName[] = [
   },
 ]
 
-const weatherCodeDescription: { [weatherCode: number]: string | {[condition: string]: string} } = {
-  0: {
+const conditionDescription: { [conditionKey: string]: string | {[condition: string]: string} } = {
+  "clear": {
     day: "Bairht",
     night: "Himins skeirs",
-  }, // "clear sky"
-  1: {
+  },
+  "mainly_clear": {
     day: "Bairht mikilaba",
     night: "Skeir mikilaba",
-  }, // "mainly clear"  du dailai maistai? or something with filaus?
-  2: "Milhmag", // "partly cloudy" ~ just making it "cloudy" but could add suman for the partly bit
-  3: "Ufarskadwiþ", // "overcast"
+  }, // du dailai maistai? or something with filaus?
+  "cloudy": "Milhmag", // just making it "cloudy" but could add suman for the partly bit
+  "overcast": "Ufarskadwiþ",
 
-  45: "Nibls", // "fog"
-  48: "Nibls friusands", // "depositing rime fog"
+  "fog": "Nibls",
+  "depositing_rime_fog": "Nibls friusands",
 
-  51: "Ufartrusnjando leitil", // "Drizzle: Light intensity"
-  53: "Ufartrusnjando", // "Drizzle: moderate intensity"
-  55: "Ufartrusnjando filu", // "Drizzle: dense intensity"
+  "drizzle_light": "Ufartrusnjando leitil",
+  "drizzle": "Ufartrusnjando",
+  "drizzle_dense": "Ufartrusnjando filu",
 
-  56: "Ufartrusnjando friusando leitil", // "Freezing Drizzle: Light intensity"
-  57: "Ufartrusnjando friusando filu ", // "Freezing Drizzle: dense intensity"
+  "freezing_drizzle_light": "Ufartrusnjando friusando leitil",
+  "freezing_drizzle_dense": "Ufartrusnjando friusando filu ",
 
-  61: "Rign leitil", // "Rain: Slight intensity"
-  63: "Rign", // "Rain: moderate intensity"
-  65: "Rignis filu", // "Rain: dense intensity"
+  "rain_slight": "Rign leitil",
+  "rain": "Rign",
+  "rain_dense": "Rignis filu",
 
-  66: "Rign friusando leitil", // "Freezing Rain: Light intensity"
-  67: "Rignis friusandins filu", // "Freezing Rain: heavy intensity"
+  "freezing_rain_light": "Rign friusando leitil",
+  "freezing_rain_heavy": "Rignis friusandins filu",
 
-  71: "Snaiws leitils", // "Snow fall: Slight intensity"
-  73: "Snaiws", // "Snow fall: moderate intensity"
-  75: "Snaiwis filu", // "Snow fall: heavy intensity"
+  "snow_slight": "Snaiws leitils",
+  "snow": "Snaiws",
+  "snow_heavy": "Snaiwis filu",
 
-  77: "Snaiwis kaurnona", // "Snow grains"
+  "snow_grains": "Snaiwis kaurnona",
 
-  80: "Rignis skūros leitilos", // "Rain showers: Slight intensity"
-  81: "Rignis skūros", // "Rain showers: moderate intensity"
-  82: "Rignis skūro filu", // "Rain showers: violent intensity"
+  "rain_showers_slight": "Rignis skūros leitilos",
+  "rain_showers": "Rignis skūros",
+  "rain_showers_violent": "Rignis skūro filu",
 
-  85: "Snaiwis skūros leitilos", // "Snow showers: Slight intensity"
-  86: "Snaiwis skūro filu", // "Snow showers: heavy intensity"
+  "snow_showers_slight": "Snaiwis skūros leitilos",
+  "snow_showers_heavy": "Snaiwis skūro filu",
 
-  95: "Þeihwo", // "Thunderstorm: Slight or moderate"
-  96: "Þeihwo miþ hagla", // "Thunderstorm with hail"
-  99: "Þeihwo miþ hagla", // "Thunderstorm with hail"
+  "thunderstorm": "Þeihwo",
+  "thunderstorm_hail": "Þeihwo miþ hagla",
 }
 
 const compassDirections =
@@ -186,7 +185,7 @@ export default {
   today,
   weekdays,
   months,
-  weatherCodeDescription,
+  conditionDescription,
   compassDirections,
   tempSymbols,
   windSpeedSymbols,
