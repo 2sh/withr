@@ -24,7 +24,7 @@ import {
 
 import {
   determineUnits,
-  getOwmImageUrl,
+  owmKeyMapping,
   uvIndexRiskMapping
 } from '../weather_tools'
 import {
@@ -55,6 +55,12 @@ const windSpeedUnit = useLocalStorage<WindSpeedUnit>('wind_speed_unit',
   determinedUnits.isImperial ? 'mph' : 'kmh')
 const precipitationUnit = useLocalStorage<PrecipitationUnit>('precipitation_unit',
   determinedUnits.isImperial ? 'inch' : 'mm')
+
+
+watch(isGothicScript, v =>
+{
+  document.body.setAttribute("lang", v ? 'got-Goth' : 'got-Latn')
+})
 
 /* dark mode */
 
@@ -247,7 +253,7 @@ function getDays()
       title,
       tempMax: formatTemp(data.value.daily.temperature_2m_max[i]),
       tempMin: formatTemp(data.value.daily.temperature_2m_min[i]),
-      imageUrl: getOwmImageUrl(data.value.daily.weather_code[i] || 0, true)
+      conditionKey: owmKeyMapping[data.value.daily.weather_code[i]!]!,
     })
   }
   return days
@@ -345,7 +351,8 @@ function getHour(object: WeatherDataHour|WeatherDataHourly, index = -1): WithHou
     isFoldedSectionVisible: false,
 
     description: getDescription(weatherCode, isDay),
-    imageUrl: getOwmImageUrl(weatherCode, isDay),
+    conditionKey: owmKeyMapping[weatherCode]!,
+    isDay,
 
     temp: formatTemp(getValue(object.temperature_2m, index)),
     apparentTemp: formatTemp(getValue(object.apparent_temperature, index)),
@@ -489,6 +496,23 @@ const options = ref({
   colorScheme,
 })
 
+function setBodyClass(value: string | null, prefix: string)
+{
+  document.body.classList.forEach(c => {
+    if (c.startsWith(prefix))
+      document.body.classList.remove(c)
+  })
+  if (value)
+    document.body.classList.add(
+      `${prefix}${value.replaceAll("_", '-')}`)
+}
+
+watch(() => current.value ? current.value.conditionKey : null,
+  conditionKey => setBodyClass(conditionKey, 'withr-day-condition-'))
+
+watch(() => current.value ? current.value.isDay : null,
+  isDay => setBodyClass(isDay ? 'day' : 'night', 'withr-day-tod-'))
+
 </script>
 
 <template>
@@ -521,13 +545,15 @@ const options = ref({
     </div>
     <div v-if="data" id="withr-display">
       <div id="withr-top">
-        <div id="withr-current" v-if="current">
+        <div id="withr-current" v-if="current"
+          :class="[
+            `withr-section-condition-${current.conditionKey.replaceAll('_', '-')}`,
+            `withr-section-tod-${current.isDay ? 'day' : 'night'}`]">
           <div class="withr-current-title">
             <span v-if="placeName">{{ t("ui.now_in") }} <span lang="en">{{ placeName }}</span></span>
             <span v-else>{{ t("ui.now") }}</span></div>
           <div class="withr-current-content">
-            <div class="withr-current-image">
-              <img :src="current.imageUrl">
+            <div class="withr-condition-image">
             </div>
             <div class="withr-current-details">
               <div class="withr-current-temp"><span v-html="current.temp"></span>{{ $t('tempSymbols.' + dataTempUnit) }}</div>
@@ -548,14 +574,14 @@ const options = ref({
       </div>
       <div id="withr-dow-row">
         <template v-for="(day, index) in days">
-          <div :class="{ 'withr-dow-day': true,
-              'withr-dow-day-selected': selectedDayIndex == index }"
+          <div :class="[ 'withr-dow',
+            `withr-section-condition-${day.conditionKey.replaceAll('_', '-')}`,
+            `withr-section-tod-day`,
+            { 'withr-dow-day': true, 'withr-dow-day-selected': selectedDayIndex == index }]"
               @click="selectedDayIndex = index">
             <div class="withr-dow-title">{{ day.title }}</div>
             <div class="withr-dow-lower">
-              <div class="withr-dow-image">
-                <img :src="day.imageUrl">
-              </div>
+              <div class="withr-condition-image"></div>
               <div class="withr-dow-temp">
                 <div class="withr-dow-temp-max" v-html="day.tempMax"></div>
                 <div class="withr-dow-temp-min" v-html="day.tempMin"></div>
@@ -566,14 +592,14 @@ const options = ref({
       </div>
       <div id="withr-hours">
         <template v-for="hour in hours">
-          <div class="withr-hour"
+          <div :class="['withr-hour',
+            `withr-section-condition-${hour.conditionKey.replaceAll('_', '-')}`,
+            `withr-section-tod-${hour.isDay ? 'day' : 'night'}`]"
             @click="hour.isFoldedSectionVisible = !hour.isFoldedSectionVisible">
             <div>
               <div class="withr-hour-title" v-html="hour.title"></div>
               <div class="withr-hour-temp" v-html="hour.temp"></div>
-              <div class="withr-hour-image">
-                <img :src="hour.imageUrl">
-              </div>
+              <div class="withr-condition-image"></div>
               <div class="withr-hour-description">{{ hour.description }}</div>
             </div>
             <div>

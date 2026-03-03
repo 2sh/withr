@@ -49,7 +49,7 @@ export type WithrDay = {
   title: string,
   tempMax: string,
   tempMin: string,
-  imageUrl: string,
+  conditionKey: string,
 }
 
 export type WithHourSimple = {
@@ -58,7 +58,8 @@ export type WithHourSimple = {
   isFoldedSectionVisible: boolean,
 
   description: string,
-  imageUrl: string,
+  conditionKey: string,
+  isDay: boolean,
 
   temp: string,
   apparentTemp: string,
