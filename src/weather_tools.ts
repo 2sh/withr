@@ -135,7 +135,7 @@ export const speedConverionMap: ConversionMap = {
   ms: v => v / 3.6,
   mph: v => v * 0.6213712,
   kn: v => v * 0.5399568,
-  bft: v => Math.pow(v / 3.0096, 1/3),
+  bft: v => Math.pow(v / 3.0096, 2/3),
 }
 
 export const distanceConversionMap: ConversionMap = {
