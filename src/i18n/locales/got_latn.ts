@@ -167,6 +167,7 @@ const compassDirections =
 const tempSymbols: TempSymbols = {
   celsius: 'C',
   fahrenheit: 'F',
+  kelvin: 'K',
 }
 
 const windSpeedSymbols: WindSpeedSymbols = {
@@ -174,6 +175,7 @@ const windSpeedSymbols: WindSpeedSymbols = {
   ms: " m/s",
   mph: " mph",
   kn: " Knots",
+  bft: ' B',
 }
 
 const precipitationSymbols: PrecipitationSymbols = {

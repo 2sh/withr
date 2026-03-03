@@ -125,3 +125,24 @@ export const uvIndexRiskMapping: [number, string][] = [
   [ 8, 'very-high' ],
   [ 11, 'extreme' ],
 ]
+
+type Converter = (value: number) => number
+type ConversionMap = {
+  [key: string]: Converter
+}
+
+export const speedConverionMap: ConversionMap = {
+  ms: v => v / 3.6,
+  mph: v => v * 0.6213712,
+  kn: v => v * 0.5399568,
+  bft: v => Math.pow(v / 3.0096, 1/3),
+}
+
+export const distanceConversionMap: ConversionMap = {
+  inch: v => v / 25.4,
+}
+
+export const temperatureConversionMap: ConversionMap = {
+  fahrenheit: v => v * 1.8 + 32,
+  kelvin: v => v + 273.15,
+}

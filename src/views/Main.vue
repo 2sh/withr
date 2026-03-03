@@ -24,7 +24,10 @@ import {
 
 import {
   determineUnits,
+  distanceConversionMap,
   owmKeyMapping,
+  speedConverionMap,
+  temperatureConversionMap,
   uvIndexRiskMapping
 } from '../weather_tools'
 import {
@@ -87,9 +90,6 @@ const long = ref<number | null>(null)
 const placeName = ref<string | null>(null)
 
 const data = ref<WeatherData | null>(null)
-let dataTempUnit: TempUnit | null = null
-let dataWindSpeedUnit: WindSpeedUnit | null = null
-let dataPrecipitationUnit: PrecipitationUnit | null = null
 //const utcOffsetSeconds = computed(() => data.value ? data.value.utc_offset_seconds : null)
 
 const currentTime = computed(() => data.value ? new Date(data.value.current.time) : null)
@@ -112,10 +112,7 @@ function getCurrentTimeFromOffset(offset: number)
 }
 */
 
-let reloadData = false
-watch(tempUnit, () => reloadData = true)
-watch(windSpeedUnit, () => reloadData = true)
-watch(precipitationUnit, () => reloadData = true)
+let reloadData = false // unused for now
 
 async function getData()
 {
@@ -123,9 +120,6 @@ async function getData()
 
   isLoading.value = true
 
-  dataTempUnit = tempUnit.value
-  dataWindSpeedUnit = windSpeedUnit.value
-  dataPrecipitationUnit = precipitationUnit.value
   const hourParams = "is_day,weather_code,"
     + "temperature_2m,apparent_temperature,uv_index,"
     + "precipitation_probability,precipitation,relative_humidity_2m,"
@@ -136,9 +130,6 @@ async function getData()
     + "&hourly=" + hourParams
     + "&current=" + hourParams
     + "&timezone=auto"
-    + "&wind_speed_unit=" + dataWindSpeedUnit
-    + "&temperature_unit=" + dataTempUnit
-    + "&precipitation_unit=" + dataPrecipitationUnit
 
   const response = await fetch(url)
   data.value = await response.json()
@@ -178,7 +169,9 @@ const actualGothicNumeralMode = computed(() =>
 function formatTemp(value: number | undefined)
 {
   if (typeof value === 'undefined') return '?'
-  const rValue = Math.round(value)
+  const cValue = tempUnit.value == 'celsius'
+    ? value : temperatureConversionMap[tempUnit.value]!(value)
+  const rValue = Math.round(cValue)
   const fValue = actualGothicNumeralMode.value == 'full'
     ? toGothicValue(rValue) : rValue.toString()
   return fValue + '°' || ''
@@ -195,10 +188,12 @@ function formatPercentage(value: number | undefined)
 function formatSpeed(value: number | undefined)
 {
   if (typeof value === 'undefined') return '?'
-  const rValue = Math.round(value)
+  const cValue = windSpeedUnit.value == 'kmh'
+    ? value : speedConverionMap[windSpeedUnit.value]!(value)
+  const rValue = Math.round(cValue)
   const fValue = actualGothicNumeralMode.value == 'full'
     ? toGothicValue(rValue) : rValue.toString()
-  return fValue + t('windSpeedSymbols.' + dataWindSpeedUnit) || ''
+  return fValue + t('windSpeedSymbols.' + windSpeedUnit.value) || ''
 }
 
 function formatCompassDirection(value: number | undefined)
@@ -213,9 +208,12 @@ function formatCompassDirection(value: number | undefined)
 function formatPrecipitation(value: number | undefined)
 {
   if (typeof value === 'undefined') return '?'
+  const cValue = precipitationUnit.value == 'mm'
+    ? value : distanceConversionMap[precipitationUnit.value]!(value)
   const denominator = precipitationUnit.value == 'inch' ? 1000 : 10
   const fValue = actualGothicNumeralMode.value == 'full'
-    ? toGothicValue(value, denominator) : value.toString()
+    ? toGothicValue(cValue, denominator)
+    : Math.round(cValue*denominator) / denominator
   return fValue + t('precipitationSymbols.' + precipitationUnit.value) || ''
 }
 
@@ -549,7 +547,7 @@ watch(() => current.value ? current.value.isDay : null,
             <div class="withr-condition-image">
             </div>
             <div class="withr-current-details">
-              <div class="withr-current-temp"><span v-html="current.temp"></span>{{ $t('tempSymbols.' + dataTempUnit) }}</div>
+              <div class="withr-current-temp"><span v-html="current.temp"></span>{{ $t('tempSymbols.' + tempUnit) }}</div>
             </div>
           </div>
           <div class="withr-current-details-line">

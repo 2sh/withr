@@ -82,6 +82,7 @@ const emit = defineEmits(['close'])
             <select v-model="options.tempUnit">
               <option value="celsius">Celsius (°C)</option>
               <option value="fahrenheit">Fahrenheit (°F)</option>
+              <option value="kelvin">Kelvin (°K)</option>
             </select>
           </div>
         </div>
@@ -95,6 +96,7 @@ const emit = defineEmits(['close'])
               <option value="mph">Miles per hour (mph)</option>
               <option value="ms">Metres per second (m/s)</option>
               <option value="kn">Knots</option>
+              <option value="bft">Beaufort</option>
             </select>
           </div>
         </div>

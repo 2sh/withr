@@ -86,6 +86,7 @@ export type GothicNumeralMode =
 export interface TempSymbols {
   celsius: string,
   fahrenheit: string,
+  kelvin: string,
 }
 export type TempUnit = keyof TempSymbols
 
@@ -94,6 +95,7 @@ export interface WindSpeedSymbols {
   ms: string,
   mph: string,
   kn: string,
+  bft: string,
 }
 export type WindSpeedUnit = keyof WindSpeedSymbols
 
