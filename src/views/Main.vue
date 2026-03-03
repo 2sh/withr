@@ -68,7 +68,8 @@ watch(isGothicScript, v =>
 /* theme */
 
 const theme = useLocalStorage<Theme>('theme',
-  document.documentElement.dataset.theme == 'light' ? 'light' : 'dark'
+  (window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches
+  ? 'light' : 'dark')
 )
 
 function setTheme()
