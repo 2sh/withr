@@ -86,7 +86,6 @@ const long = ref<number | null>(null)
 const placeName = ref<string | null>(null)
 
 const data = ref<WeatherData | null>(null)
-//const utcOffsetSeconds = computed(() => data.value ? data.value.utc_offset_seconds : null)
 
 const currentTime = computed(() => data.value ? new Date(data.value.current.time) : null)
 
@@ -98,15 +97,6 @@ function setLanguage()
 }
 setLanguage()
 watch(isGothicScript, setLanguage)
-
-/*
-function getCurrentTimeFromOffset(offset: number)
-{
-  const date = new Date()
-  date.setSeconds(date.getSeconds()+offset)
-  return date
-}
-*/
 
 let reloadData = false // unused for now
 
@@ -258,32 +248,6 @@ function getValue<Type>(value: Type|Type[], index: number)
   return Array.isArray(value) ? value[index] : value
 }
 
-/*
-
-function getAmPm(date: Date)
-{
-  const isPm = date.getHours() >= 12
-  return !options.isGothicScript
-    ? (isPm ? 'p.m.' : 'a.m.')
-    : `<span class='overline'>${fromLatin(isPm ? 'pm' : 'am')}</span>`
-}
-
-function get12Hour(date: Date)
-{
-  const hours = date.getHours()
-  const h = (hours % 12) || 12
-  return actualGothicNumeralMode.value == 'none'
-    ? h : toGothicValue(h)
-}
-
-function get24Hour(date: Date)
-{
-  const hours = date.getHours()
-  return actualGothicNumeralMode.value == 'full'
-    ? toGothicValue(hours)
-    : hours.toString().padStart(2, '0')
-}
-*/
 
 function getGothicValue(value: number, minMode: GothicNumeralMode = 'mix')
 {
@@ -296,29 +260,11 @@ function getGothicValue(value: number, minMode: GothicNumeralMode = 'mix')
 
 function formatDateTime(date: Date)
 {
-  /*
-  const weekday = weekdays[date.getDay()]!.long
-  const fWeekday = options.isGothicScript
-    ? fromLatin(weekday) : weekday
-  */
   const dom = getGothicValue(date.getDate())
   const monthName = t(`months.${date.getMonth()}.long`)
   const year = getGothicValue(date.getFullYear())
   return `${dom} ${monthName} ${year}`
-
-  /*
-  const hours = options.is24hour ? get24Hour(date) : get12Hour(date)
-  const minutes = actualGothicNumeralMode.value != 'full'
-    ? date.getMinutes().toString().padStart(2, '0') : toGothicValue(date.getMinutes())
-  const seconds = actualGothicNumeralMode.value != 'full'
-    ? date.getSeconds().toString().padStart(2, '0') : toGothicValue(date.getSeconds())
-  const amPm = options.is24hour ? '' : ' ' + getAmPm(date)
-  return `${fWeekday}, ${dom} ${fMonthName} ${year} ${hours}:${minutes}:${seconds}${amPm}`
-  */
-
 }
-
-
 
 function getHour(object: WeatherDataHour|WeatherDataHourly, index = -1): WithHourSimple
 {
@@ -461,21 +407,6 @@ function handleSetSearch(result: SearchResult)
 }
 
 const showSearch = ref(false)
-
-/*
-const currentDateTime = useTemplateRef('currentDateTime')
-
-function displayDateTime()
-{
-  if (currentDateTime.value && utcOffsetSeconds.value !== null)
-  {
-    const date = getCurrentTimeFromOffset(utcOffsetSeconds.value)
-    currentDateTime.value.innerHTML = formatDateTime(date)
-  }
-  setTimeout(displayDateTime, 1000 - (new Date()).getMilliseconds())
-}
-displayDateTime()
-*/
 
 const options = ref({
   is24hour, isGothicScript, gothicNumeralMode,
