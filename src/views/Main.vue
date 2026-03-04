@@ -19,6 +19,7 @@ import {
   computed,
   ref,
   watch,
+  watchEffect,
 } from 'vue'
 
 import {
@@ -304,7 +305,8 @@ function getHours()
 }
 
 const days = computed(() => getDays())
-const hours = computed(() => getHours())
+const hours = ref<WithrHour[]>([])
+watchEffect(() => { hours.value = getHours() })
 const current = computed(() => !data.value ? null : getHour(data.value.current))
 
 watch(() => current.value ? current.value.conditionKey : null,
