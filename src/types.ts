@@ -90,14 +90,14 @@ export interface TempSymbols {
 }
 export type TempUnit = keyof TempSymbols
 
-export interface WindSpeedSymbols {
+export interface SpeedSymbols {
   kmh: string,
   ms: string,
   mph: string,
   kn: string,
   bft: string,
 }
-export type WindSpeedUnit = keyof WindSpeedSymbols
+export type SpeedUnit = keyof SpeedSymbols
 
 export interface PrecipitationSymbols {
   mm: string,
@@ -114,7 +114,7 @@ export type WithrOptions = {
   theme: Theme,
 
   tempUnit: TempUnit,
-  windSpeedUnit: WindSpeedUnit,
+  windSpeedUnit: SpeedUnit,
   precipitationUnit: PrecipitationUnit,
 }
 

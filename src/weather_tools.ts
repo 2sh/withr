@@ -146,3 +146,10 @@ export const temperatureConversionMap: ConversionMap = {
   fahrenheit: v => v * 1.8 + 32,
   kelvin: v => v + 273.15,
 }
+
+export function angleToCompassIndex(angle: number, compassDirections = 16)
+{
+  return Math.round(
+      ((angle %= 360) < 0 ? angle + 360 : angle) / (360 / compassDirections))
+    % compassDirections
+}

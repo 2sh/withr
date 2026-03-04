@@ -1,5 +1,10 @@
 import { toGothicNumerals } from "./transliterate"
 
+export function addOverlineHtml(content: string)
+{
+  return `<span class='overline'>${content}</span>`
+}
+
 function toGothicFractionalValue(value: number, denominator: null | number = null)
 {
   if (!denominator) return ''
@@ -22,7 +27,6 @@ export function toGothicValue(value: number, denominator: null | number = null)
     : toGothicNumerals(absValue) + ' ' + gothicFractionalValue
 
   const gothicValue = value < 0 ? `(${absGothicValue})` : absGothicValue
-  const fValue = `·<span class='overline'>${gothicValue}</span>·`
+  const fValue = `·${addOverlineHtml(gothicValue)}·`
   return fValue
 }
-

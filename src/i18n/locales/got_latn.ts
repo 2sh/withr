@@ -2,7 +2,7 @@ import type {
   LongShortNarrowName,
   PrecipitationSymbols,
   TempSymbols,
-  WindSpeedSymbols
+  SpeedSymbols
 } from "../../types"
 
 const weekdays: LongShortNarrowName[] = [
@@ -170,7 +170,7 @@ const tempSymbols: TempSymbols = {
   kelvin: 'K',
 }
 
-const windSpeedSymbols: WindSpeedSymbols = {
+const windSpeedSymbols: SpeedSymbols = {
   kmh: " km/h",
   ms: " m/s",
   mph: " mph",

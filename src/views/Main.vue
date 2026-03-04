@@ -9,7 +9,7 @@ import type {
   WithrHour,
   SearchResult,
   TempUnit,
-  WindSpeedUnit,
+  SpeedUnit,
   GothicNumeralMode,
   PrecipitationUnit,
   Theme
@@ -22,6 +22,7 @@ import {
 } from 'vue'
 
 import {
+  angleToCompassIndex,
   determineUnits,
   distanceConversionMap,
   owmKeyMapping,
@@ -40,7 +41,7 @@ import router from '@/router'
 const route = useRoute()
 
 import { useTranslation } from "i18next-vue";
-import { toGothicValue } from '@/gothic_tools'
+import { addOverlineHtml, toGothicValue } from '@/gothic_tools'
 import { setBodyClass } from '@/tools'
 const { i18next, t } = useTranslation();
 
@@ -53,7 +54,7 @@ const gothicNumeralMode = useLocalStorage<GothicNumeralMode>('gothic_numeral_mod
 
 const tempUnit = useLocalStorage<TempUnit>('temp_unit',
   determinedUnits.isFahrenheit ? 'fahrenheit' : 'celsius')
-const windSpeedUnit = useLocalStorage<WindSpeedUnit>('wind_speed_unit',
+const windSpeedUnit = useLocalStorage<SpeedUnit>('wind_speed_unit',
   determinedUnits.isImperial ? 'mph' : 'kmh')
 const precipitationUnit = useLocalStorage<PrecipitationUnit>('precipitation_unit',
   determinedUnits.isImperial ? 'inch' : 'mm')
@@ -169,9 +170,10 @@ function formatSpeed(value: number | undefined)
 function formatCompassDirection(value: number | undefined)
 {
   if (typeof value === 'undefined') return ''
-  const index = Math.round(((value %= 360) < 0 ? value + 360 : value) / 22.5) % 16
+  const index = angleToCompassIndex(value)
   const direction = t('compassDirections.' + index) || ''
-  const fValue = !isGothicScript.value ? direction : `<span class='overline'>${direction}</span>`
+  const fValue = !isGothicScript.value
+    ? direction : addOverlineHtml(direction)
   return fValue
 }
 
@@ -203,7 +205,7 @@ function formatHour(hour: Date)
   const amPm = isPm ? t('ui.am') : t('ui.pm')
   const fAmPm = !isGothicScript.value
     ? amPm
-    : `<span class='overline'>${amPm}</span>`
+    : addOverlineHtml(amPm)
   return fh + ' ' + fAmPm
 }
 
@@ -221,6 +223,7 @@ function formatDate(date: Date)
 function getDays()
 {
   if (!data.value) return []
+
   const days: WithrDay[] = []
   for (let i=0; i<7; i++)
   {
@@ -254,7 +257,6 @@ function getHour(object: WeatherDataHour|WeatherDataHourly, index = -1): WithHou
   const uvIndex = Math.round(getValue(object.uv_index, index)!)
   const uvIndexRisk = uvIndexRiskMapping[
     uvIndexRiskMapping.findIndex(([v,_]) => uvIndex < v)-1]![1]
-
 
   return {
     formattedDate: formatDate(date),
@@ -343,6 +345,7 @@ watch(() => route.params.location, () =>
 /* geolocation */
 
 const isGeolocationAvailable = "geolocation" in navigator
+const geolocationLock = ref(false)
 
 const handlePositionSuccess: PositionCallback = async (position) =>
 {
@@ -358,7 +361,6 @@ const handlePositionError: PositionErrorCallback = (error) =>
   geolocationLock.value = false
 }
 
-const geolocationLock = ref(false)
 function geolocate()
 {
   if (geolocationLock.value) return
