@@ -19,7 +19,6 @@ import {
   computed,
   ref,
   watch,
-  watchEffect
 } from 'vue'
 
 import {
@@ -30,9 +29,6 @@ import {
   temperatureConversionMap,
   uvIndexRiskMapping
 } from '../weather_tools'
-import {
-  toGothicNumerals
-} from '../transliterate'
 
 
 import Options from '../components/Options.vue'
@@ -41,10 +37,13 @@ import { useLocalStorage } from '@vueuse/core'
 import { useRoute } from 'vue-router'
 import router from '@/router'
 
+const route = useRoute()
+
 import { useTranslation } from "i18next-vue";
+import { toGothicValue } from '@/gothic_tools'
+import { setBodyClass } from '@/tools'
 const { i18next, t } = useTranslation();
 
-const showOptions = ref(false)
 
 const determinedUnits = determineUnits()
 
@@ -60,10 +59,20 @@ const precipitationUnit = useLocalStorage<PrecipitationUnit>('precipitation_unit
   determinedUnits.isImperial ? 'inch' : 'mm')
 
 
+/* gothic script switch */
+
 watch(isGothicScript, v =>
 {
   document.body.setAttribute("lang", v ? 'got-Goth' : 'got-Latn')
 })
+
+function setLanguage()
+{
+  i18next.changeLanguage(isGothicScript.value ? 'got-Goth' : 'got-Latn')
+}
+setLanguage()
+watch(isGothicScript, setLanguage)
+
 
 /* theme */
 
@@ -79,25 +88,17 @@ function setTheme()
 watch(theme, setTheme)
 setTheme()
 
-/* theme end */
+
+/* data retrieval */
 
 const lat = ref<number | null>(null)
 const long = ref<number | null>(null)
 const placeName = ref<string | null>(null)
 
 const data = ref<WeatherData | null>(null)
-
 const currentTime = computed(() => data.value ? new Date(data.value.current.time) : null)
 
 const isLoading = ref(false)
-
-function setLanguage()
-{
-  i18next.changeLanguage(isGothicScript.value ? 'got-Goth' : 'got-Latn')
-}
-setLanguage()
-watch(isGothicScript, setLanguage)
-
 let reloadData = false // unused for now
 
 async function getData()
@@ -123,34 +124,20 @@ async function getData()
   isLoading.value = false
 }
 
-function toGothicFractionalValue(value: number, denominator: null | number = null)
-{
-  if (!denominator) return ''
-  const fractionalValue = Math.round((Math.abs(value) % 1) * denominator)
-  if (!fractionalValue) return ''
 
-  console.log(fractionalValue)
-  const gothicNumerator = toGothicNumerals(fractionalValue)
-  const gothicDenominator = toGothicNumerals(denominator)
-  return `<sup>${gothicNumerator}</sup><span class='frac-div'>&frasl;</span><sub>${gothicDenominator}</sub>`
-}
-
-function toGothicValue(value: number, denominator: null | number = null)
-{
-  const gothicFractionalValue = toGothicFractionalValue(value, denominator)
-
-  const absValue = Math.abs(Math.round(value))
-  const absGothicValue = absValue == 0
-    ? (gothicFractionalValue ? gothicFractionalValue : "0")
-    : toGothicNumerals(absValue) + ' ' + gothicFractionalValue
-
-  const gothicValue = value < 0 ? `(${absGothicValue})` : absGothicValue
-  const fValue = `·<span class='overline'>${gothicValue}</span>·`
-  return fValue
-}
+/* format functions */
 
 const actualGothicNumeralMode = computed(() =>
   !isGothicScript.value ? 'none' : gothicNumeralMode.value)
+
+function getGothicValue(value: number, minMode: GothicNumeralMode = 'mix')
+{
+  if (actualGothicNumeralMode.value == minMode
+    || actualGothicNumeralMode.value == 'full')
+    return toGothicValue(value)
+  else
+    return value.toString()
+}
 
 function formatTemp(value: number | undefined)
 {
@@ -158,16 +145,14 @@ function formatTemp(value: number | undefined)
   const cValue = tempUnit.value == 'celsius'
     ? value : temperatureConversionMap[tempUnit.value]!(value)
   const rValue = Math.round(cValue)
-  const fValue = actualGothicNumeralMode.value == 'full'
-    ? toGothicValue(rValue) : rValue.toString()
+  const fValue = getGothicValue(rValue, 'full')
   return fValue + '°' || ''
 }
 
 function formatPercentage(value: number | undefined)
 {
   if (typeof value === 'undefined') return '?'
-  const fValue = actualGothicNumeralMode.value == 'full'
-    ? toGothicValue(value) : value.toString()
+  const fValue = getGothicValue(value, 'full')
   return fValue + '%' || ''
 }
 
@@ -177,8 +162,7 @@ function formatSpeed(value: number | undefined)
   const cValue = windSpeedUnit.value == 'kmh'
     ? value : speedConverionMap[windSpeedUnit.value]!(value)
   const rValue = Math.round(cValue)
-  const fValue = actualGothicNumeralMode.value == 'full'
-    ? toGothicValue(rValue) : rValue.toString()
+  const fValue = getGothicValue(rValue, 'full')
   return fValue + t('windSpeedSymbols.' + windSpeedUnit.value) || ''
 }
 
@@ -215,14 +199,24 @@ function formatHour(hour: Date)
 
   const isPm = hours >= 12
   const h = (hours % 12) || 12
-  const fh = actualGothicNumeralMode.value == 'none'
-    ? h : toGothicValue(h)
+  const fh = getGothicValue(h)
   const amPm = isPm ? t('ui.am') : t('ui.pm')
   const fAmPm = !isGothicScript.value
     ? amPm
     : `<span class='overline'>${amPm}</span>`
   return fh + ' ' + fAmPm
 }
+
+function formatDate(date: Date)
+{
+  const dom = getGothicValue(date.getDate())
+  const monthName = t(`months.${date.getMonth()}.long`)
+  const year = getGothicValue(date.getFullYear())
+  return `${dom} ${monthName} ${year}`
+}
+
+
+/* page data */
 
 function getDays()
 {
@@ -249,23 +243,6 @@ function getValue<Type>(value: Type|Type[], index: number)
 }
 
 
-function getGothicValue(value: number, minMode: GothicNumeralMode = 'mix')
-{
-  if (actualGothicNumeralMode.value == minMode
-    || actualGothicNumeralMode.value == 'full')
-    return toGothicValue(value)
-  else
-    return value.toString()
-}
-
-function formatDateTime(date: Date)
-{
-  const dom = getGothicValue(date.getDate())
-  const monthName = t(`months.${date.getMonth()}.long`)
-  const year = getGothicValue(date.getFullYear())
-  return `${dom} ${monthName} ${year}`
-}
-
 function getHour(object: WeatherDataHour|WeatherDataHourly, index = -1): WithHourSimple
 {
   const weatherCode = getValue(object.weather_code, index) || 0
@@ -280,7 +257,7 @@ function getHour(object: WeatherDataHour|WeatherDataHourly, index = -1): WithHou
 
 
   return {
-    formattedDate: formatDateTime(date),
+    formattedDate: formatDate(date),
 
     isFoldedSectionVisible: false,
 
@@ -325,20 +302,17 @@ function getHours()
 }
 
 const days = computed(() => getDays())
-const hours = ref<WithrHour[]>([])
-watchEffect(() =>
-{
-  hours.value = getHours()
-})
+const hours = computed(() => getHours())
 const current = computed(() => !data.value ? null : getHour(data.value.current))
 
-const route = useRoute()
+watch(() => current.value ? current.value.conditionKey : null,
+  conditionKey => setBodyClass(conditionKey, 'withr-day-condition-'))
 
-function handleCloseOptions()
-{
-  showOptions.value = !showOptions.value
-  if (reloadData) getData()
-}
+watch(() => current.value ? current.value.isDay : null,
+  isDay => setBodyClass(isDay ? 'day' : 'night', 'withr-day-tod-'))
+
+
+/* routing */
 
 watch(() => route.params.location, () =>
 {
@@ -364,6 +338,9 @@ watch(() => route.params.location, () =>
 
   getData()
 }, { immediate: true })
+
+
+/* geolocation */
 
 const isGeolocationAvailable = "geolocation" in navigator
 
@@ -397,6 +374,10 @@ function geolocate()
   )
 }
 
+/* search box */
+
+const showSearch = ref(false)
+
 function handleSetSearch(result: SearchResult)
 {
   const pathEnd = !result.name ? '' : (':' + result.name.replaceAll(' ', '_'))
@@ -406,30 +387,21 @@ function handleSetSearch(result: SearchResult)
   showSearch.value = false
 }
 
-const showSearch = ref(false)
+/* options box */
+
+const showOptions = ref(false)
+
+function handleCloseOptions()
+{
+  showOptions.value = !showOptions.value
+  if (reloadData) getData()
+}
 
 const options = ref({
   is24hour, isGothicScript, gothicNumeralMode,
   tempUnit, windSpeedUnit, precipitationUnit,
   theme,
 })
-
-function setBodyClass(value: string | null, prefix: string)
-{
-  document.body.classList.forEach(c => {
-    if (c.startsWith(prefix))
-      document.body.classList.remove(c)
-  })
-  if (value)
-    document.body.classList.add(
-      `${prefix}${value.replaceAll("_", '-')}`)
-}
-
-watch(() => current.value ? current.value.conditionKey : null,
-  conditionKey => setBodyClass(conditionKey, 'withr-day-condition-'))
-
-watch(() => current.value ? current.value.isDay : null,
-  isDay => setBodyClass(isDay ? 'day' : 'night', 'withr-day-tod-'))
 
 </script>
 
