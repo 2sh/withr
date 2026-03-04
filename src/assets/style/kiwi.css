@@ -1,0 +1,10 @@
+.withr-theme-kiwi #withr-current .withr-condition-image
+{
+  margin: 5px;
+}
+
+.withr-theme-kiwi #withr-current.withr-section-condition-clear.withr-section-tod-day .withr-condition-image,
+.withr-theme-kiwi #withr-current.withr-section-condition-mainly-clear.withr-section-tod-day .withr-condition-image
+{
+  background-image: url('../images/kiwi/SunFace.png')
+}

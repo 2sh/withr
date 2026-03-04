@@ -60,7 +60,6 @@ const windSpeedUnit = useLocalStorage<SpeedUnit>('wind_speed_unit',
 const precipitationUnit = useLocalStorage<PrecipitationUnit>('precipitation_unit',
   determinedUnits.isImperial ? 'inch' : 'mm')
 
-
 /* gothic script switch */
 
 watch(isGothicScript, v =>
@@ -86,10 +85,10 @@ const theme = useLocalStorage<Theme>('theme',
 function setTheme()
 {
   document.documentElement.dataset.theme = theme.value
+  setBodyClass(theme.value, "withr-theme-")
 }
 watch(theme, setTheme)
 setTheme()
-
 
 /* data retrieval */
 

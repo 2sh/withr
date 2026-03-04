@@ -105,7 +105,7 @@ export interface PrecipitationSymbols {
 }
 export type PrecipitationUnit = keyof PrecipitationSymbols
 
-export type Theme = 'dark' | 'light'
+export type Theme = 'dark' | 'light' | 'kiwi'
 
 export type WithrOptions = {
   isGothicScript: boolean,

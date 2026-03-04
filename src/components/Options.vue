@@ -34,6 +34,7 @@ const emit = defineEmits(['close'])
             <select v-model="options.theme">
               <option value="dark">Dark</option>
               <option value="light">Light</option>
+              <option value="kiwi">Kiwi</option>
             </select>
           </div>
         </div>
