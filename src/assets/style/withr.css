@@ -472,13 +472,13 @@ When the moon is visible:
 
 Phases of the moon:
   .moon-new-moon
-  .moon-waning-crescent
-  .moon-third-quarter
-  .moon-waning-gibbous
-  .moon-full-moon
-  .moon-waxing-gibbous
-  .moon-first-quarter
   .moon-waxing-crescent
+  .moon-first-quarter
+  .moon-waxing-gibbous
+  .moon-full-moon
+  .moon-waning-gibbous
+  .moon-third-quarter
+  .moon-waning-crescent
 
 When it is night:
   .is-night

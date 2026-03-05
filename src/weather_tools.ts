@@ -128,13 +128,13 @@ export const uvIndexRiskMapping: [number, string][] = [
 
 export const moonPhases = [
   'new_moon',
-  'waning_crescent',
-  'third_quarter',
-  'waning_gibbous',
-  'full_moon',
-  'waxing_gibbous',
-  'first_quarter',
   'waxing_crescent',
+  'first_quarter',
+  'waxing_gibbous',
+  'full_moon',
+  'waning_gibbous',
+  'third_quarter',
+  'waning_crescent',
 ]
 
 import { MoonPhase } from "astronomy-engine"
