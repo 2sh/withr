@@ -455,10 +455,17 @@
 /*
 
 Target all images:
-  .section .withr-condition-image
+  .section.<classes> .withr-condition-image
 
 Target only the large image of the current section:
-  #current .withr-condition-image
+  #current.<classes> .withr-condition-image
+
+Target whole page:
+  body.<classes>
+The body gets the same classes as the #current section
+
+
+The classes:
 
 When the moon is visible:
   .moon-is-visible
