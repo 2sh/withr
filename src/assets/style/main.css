@@ -48,6 +48,18 @@
   font-display: swap;
 }
 
+html, body, #app, main
+{
+  height: 100%;
+}
+
+main
+{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
 body
 {
   background-color: var(--bg-color);
@@ -100,20 +112,22 @@ h1
   color: inherit;
 }
 
-#footer
-{
-  margin: 7px 4px;
-  display: flex;
-  justify-content: space-between;
-  text-align: right;
-}
-
 .article
 {
   width: 800px;
   margin: 0 auto;
   font-family: sans;
   position: relative;
+}
+
+#footer
+{
+  padding: 7px 4px;
+  display: flex;
+  justify-content: space-between;
+  text-align: right;
+  width: 800px;
+  margin: 0 auto;
 }
 
 @media only screen and (max-width: 800px) {
