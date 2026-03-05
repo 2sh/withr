@@ -132,7 +132,7 @@
   font-size: 20px;
 }
 
-#current .condition-image
+#current .image
 {
   margin: -15px 0;
   width: 100px;
@@ -217,7 +217,7 @@
   white-space: nowrap;
 }
 
-.dow .condition-image
+.dow .image
 {
   text-align: center;
   margin: -10px;
@@ -272,7 +272,7 @@
   white-space: nowrap;
 }
 
-.hour .condition-image
+.hour .image
 {
   text-align: center;
   margin: -10px -5px;
@@ -364,90 +364,90 @@
 
 /* image */
 
-.condition-image
+.image
 {
   aspect-ratio: 1/1;
   background-size: contain;
 }
 
-.section.condition-clear .condition-image,
-.section.condition-mainly-clear .condition-image
+.section.clear .image,
+.section.mainly-clear .image
 {
   background-image: url('../images/conditions/clear-day.png')
 }
 
-.section.condition-clear.is-night .condition-image,
-.section.condition-mainly-clear.is-night .condition-image
+.section.clear.night .image,
+.section.mainly-clear.night .image
 {
   background-image: url('../images/conditions/clear-night.png')
 }
 
-.section.condition-cloudy .condition-image
+.section.cloudy .image
 {
   background-image: url('../images/conditions/cloudy-day.png')
 }
 
-.section.condition-cloudy.is-night .condition-image
+.section.cloudy.night .image
 {
   background-image: url('../images/conditions/cloudy-night.png')
 }
 
-.section.condition-overcast .condition-image
+.section.overcast .image
 {
   background-image: url('../images/conditions/overcast.png')
 }
 
-.section.condition-fog .condition-image,
-.section.condition-depositing-rime-fog .condition-image
+.section.fog .image,
+.section.depositing-rime-fog .image
 {
   background-image: url('../images/conditions/fog.png')
 }
 
-.section.condition-drizzle-light .condition-image,
-.section.condition-drizzle .condition-image,
-.section.condition-drizzle-dense .condition-image,
-.section.condition-freezing-drizzle-light .condition-image,
-.section.condition-freezing-drizzle-dense .condition-image
+.section.drizzle-light .image,
+.section.drizzle .image,
+.section.drizzle-dense .image,
+.section.freezing-drizzle-light .image,
+.section.freezing-drizzle-dense .image
 {
   background-image: url('../images/conditions/drizzle.png')
 }
 
-.section.condition-rain-slight .condition-image,
-.section.condition-rain .condition-image,
-.section.condition-rain-dense .condition-image,
-.section.condition-freezing-rain-light .condition-image,
-.section.condition-freezing-rain-dense .condition-image,
-.section.condition-rain-showers-slight .condition-image,
-.section.condition-rain-showers .condition-image,
-.section.condition-rain-showers-violent .condition-image
+.section.rain-slight .image,
+.section.rain .image,
+.section.rain-dense .image,
+.section.freezing-rain-light .image,
+.section.freezing-rain-dense .image,
+.section.rain-showers-slight .image,
+.section.rain-showers .image,
+.section.rain-showers-violent .image
 {
   background-image: url('../images/conditions/rain-day.png')
 }
 
-.section.condition-rain-slight.is-night .condition-image,
-.section.condition-rain.is-night .condition-image,
-.section.condition-rain-dense.is-night .condition-image,
-.section.condition-freezing-rain-light.is-night .condition-image,
-.section.condition-freezing-rain-dense.is-night .condition-image,
-.section.condition-rain-showers-slight.is-night .condition-image,
-.section.condition-rain-showers.is-night .condition-image,
-.section.condition-rain-showers-violent.is-night .condition-image
+.section.rain-slight.night .image,
+.section.rain.night .image,
+.section.rain-dense.night .image,
+.section.freezing-rain-light.night .image,
+.section.freezing-rain-dense.night .image,
+.section.rain-showers-slight.night .image,
+.section.rain-showers.night .image,
+.section.rain-showers-violent.night .image
 {
   background-image: url('../images/conditions/rain-night.png')
 }
 
-.section.condition-snow-slight .condition-image,
-.section.condition-snow .condition-image,
-.section.condition-snow-heavy .condition-image,
-.section.condition-snow-grains .condition-image,
-.section.condition-snow-showers-slight .condition-image,
-.section.condition-snow-showers-heavy .condition-image
+.section.snow-slight .image,
+.section.snow .image,
+.section.snow-heavy .image,
+.section.snow-grains .image,
+.section.snow-showers-slight .image,
+.section.snow-showers-heavy .image
 {
   background-image: url('../images/conditions/snow.png')
 }
 
-.section.condition-thunderstorm .condition-image,
-.section.condition-thunderstorm-hail .condition-image
+.section.thunderstorm .image,
+.section.thunderstorm-hail .image
 {
   background-image: url('../images/conditions/thunderstorm.png')
 }
@@ -455,10 +455,10 @@
 /*
 
 Target all images:
-  .section.<classes> .condition-image
+  .section.<classes> .image
 
 Target only the large image of the current section:
-  #current.<classes> .condition-image
+  #current.<classes> .image
 
 Target whole page:
   body.<classes>
@@ -468,23 +468,21 @@ The body gets the same classes as the #current section
 The classes:
 
 When the moon is visible:
-  .moon-is-visible
+  .moon
 
 Phases of the moon:
-  .moon-new-moon
-  .moon-waxing-crescent
-  .moon-first-quarter
-  .moon-waxing-gibbous
-  .moon-full-moon
-  .moon-waning-gibbous
-  .moon-third-quarter
-  .moon-waning-crescent
+  .new-moon
+  .waxing-crescent
+  .first-quarter
+  .waxing-gibbous
+  .full-moon
+  .waning-gibbous
+  .third-quarter
+  .waning-crescent
 
 When it is night:
-  .is-night
+  .night
 
-Weather conditions:
-  .condition-*
-Check above for all of the conditions
+Weather conditions all listed above
 
 */

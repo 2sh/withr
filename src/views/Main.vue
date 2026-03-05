@@ -237,7 +237,7 @@ function getDays()
       ? t('today.long') : t(`weekdays.${day.getDay()}.long`)
     const conditionKey = owmKeyMapping[data.value.daily.weather_code[i]!]!
     const classes = [
-      `condition-${conditionKey.replaceAll('_', '-')}`,
+      conditionKey.replaceAll('_', '-'),
     ]
     days.push({
       title,
@@ -291,12 +291,12 @@ function getHour(object: WeatherDataHour|WeatherDataHourly, index = -1,
   const moonPhase = getMoonPhase(targetDate)
 
   const classes = [
-    `condition-${conditionKey.replaceAll('_', '-')}`,
-    `moon-${moonPhase.replaceAll('_', '-')}`,
+    conditionKey.replaceAll('_', '-'),
+    moonPhase.replaceAll('_', '-'),
   ]
 
-  if (isMoonVisible) classes.push('moon-is-visible')
-  if (!isDay) classes.push('is-night')
+  if (isMoonVisible) classes.push('moon')
+  if (!isDay) classes.push('night')
 
   return {
     formattedDate: formatDate(date),
@@ -480,7 +480,7 @@ const options = ref({
             <span v-if="placeName">{{ t("ui.now_in") }} <span lang="en">{{ placeName }}</span></span>
             <span v-else>{{ t("ui.now") }}</span></div>
           <div class="current-content">
-            <div class="condition-image">
+            <div class="image">
             </div>
             <div class="current-details">
               <div class="current-temp"><span v-html="current.temp"></span>{{ $t('tempSymbols.' + tempUnit) }}</div>
@@ -510,7 +510,7 @@ const options = ref({
               @click="selectedDayIndex = index">
             <div class="dow-title">{{ day.title }}</div>
             <div class="dow-lower">
-              <div class="condition-image"></div>
+              <div class="image"></div>
               <div class="dow-temp">
                 <div class="dow-temp-max" v-html="day.tempMax"></div>
                 <div class="dow-temp-min" v-html="day.tempMin"></div>
@@ -526,7 +526,7 @@ const options = ref({
             <div>
               <div class="hour-title" v-html="hour.title"></div>
               <div class="hour-temp" v-html="hour.temp"></div>
-              <div class="condition-image"></div>
+              <div class="image"></div>
               <div class="hour-description">{{
                 $t("conditionDescription." + hour.conditionKey, {
                   context: hour.isDay ? 'day' : 'night'
