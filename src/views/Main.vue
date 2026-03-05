@@ -238,7 +238,6 @@ function getDays()
     const conditionKey = owmKeyMapping[data.value.daily.weather_code[i]!]!
     const classes = [
       `condition-${conditionKey.replaceAll('_', '-')}`,
-      'is-day',
     ]
     days.push({
       title,
