@@ -1,10 +1,10 @@
-.withr-theme-kiwi #withr-current .withr-condition-image
+.theme-kiwi #current .condition-image
 {
   margin: 5px;
 }
 
-.withr-theme-kiwi #withr-current.condition-clear .withr-condition-image,
-.withr-theme-kiwi #withr-current.condition-mainly-clear .withr-condition-image
+.theme-kiwi #current.condition-clear .condition-image,
+.theme-kiwi #current.condition-mainly-clear .condition-image
 {
   background-image: url('../images/kiwi/SunFace.png')
 }

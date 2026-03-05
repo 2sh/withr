@@ -1,14 +1,14 @@
 
 /* Options */
 
-#withr-options-section
+#options-section
 {
   display: flex;
   justify-content: center;
   margin: 10px;
 }
 
-.withr-options button
+.options button
 {
   width: 35px;
   height: 35px;
@@ -19,7 +19,7 @@
   padding: 5px;
 }
 
-.withr-options button div
+.options button div
 {
   width: 100%;
   height: 100%;
@@ -28,22 +28,22 @@
   filter: invert(var(--inverse));
 }
 
-.withr-options button:hover
+.options button:hover
 {
   background-color: var(--button-color-hover);
 }
 
-.withr-geolocate-button div
+.geolocate-button div
 {
   background-image: url('../images/pin.svg')
 }
 
-.withr-search-button div
+.search-button div
 {
   background-image: url('../images/search.svg')
 }
 
-.withr-options-button div
+.options-button div
 {
   background-image: url('../images/gear.svg')
 }
@@ -51,7 +51,7 @@
 
 /* Init page */
 
-#withr-location-links
+#location-links
 {
   width: 300px;
   margin: 0 auto;
@@ -59,7 +59,7 @@
   flex-direction: column;
 }
 
-#withr-location-links > a
+#location-links > a
 {
   margin: 5px;
   text-align: center;
@@ -69,7 +69,7 @@
   color: inherit;
 }
 
-#withr-location-links > a:hover
+#location-links > a:hover
 {
   background-color: var(--button-color-hover);
 }
@@ -77,7 +77,7 @@
 
 /* top section containing current section */
 
-#withr-top
+#top
 {
   display: flex;
   justify-content: space-between;
@@ -86,25 +86,25 @@
 
 /* current section */
 
-#withr-current
+#current
 {
   margin-bottom: 10px;
 }
 
-.withr-current-title
+.current-title
 {
   font-size: 26px;
   padding-left: 30px;
   font-weight: bold;
 }
 
-.withr-current-content
+.current-content
 {
   display: flex;
   align-items: center;
 }
 
-.withr-current-details
+.current-details
 {
   display: flex;
   gap: 20px;
@@ -112,33 +112,33 @@
   align-items: end;
 }
 
-.withr-current-details-line
+.current-details-line
 {
   display: flex;
   gap: 15px;
   align-items: baseline;
 }
 
-.withr-current-datetime
+.current-datetime
 {
   margin-top: 5px;
   margin-left: 10px;
 }
 
-.withr-current-wind
+.current-wind
 {
   display: flex;
   gap: 5px;
   font-size: 20px;
 }
 
-#withr-current .withr-condition-image
+#current .condition-image
 {
   margin: -15px 0;
   width: 100px;
 }
 
-.withr-current-description
+.current-description
 {
   padding-left: 20px;
   font-size: 22px;
@@ -147,7 +147,7 @@
 
 /* Day of week section */
 
-#withr-dow-row
+#dow-row
 {
   display: flex;
   gap: 4px;
@@ -155,7 +155,7 @@
   overflow-y: hidden;
 }
 
-.withr-dow-day
+.dow-day
 {
   flex: 1 1 0px;
   display: flex;
@@ -169,55 +169,55 @@
   border-bottom: 4px solid var(--button-color);
 }
 
-.withr-dow-day:hover
+.dow-day:hover
 {
   background-color: var(--button-color-hover);
   border-bottom-color: var(--button-color-hover);
 }
 
-.withr-dow-day-selected
+.dow-day-selected
 {
   border-bottom-color: rgb(255, 187, 0);
 }
 
-.withr-dow-day-selected:hover
+.dow-day-selected:hover
 {
   border-bottom-color: rgb(255, 187, 0);
 }
 
-.withr-dow-title
+.dow-title
 {
   text-align: center;
   white-space: nowrap;
   font-size: 16px;
 }
 
-.withr-dow-title:lang(got-Goth)
+.dow-title:lang(got-Goth)
 {
   font-size: 14px;
 }
 
-.withr-dow-lower
+.dow-lower
 {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.withr-dow-temp
+.dow-temp
 {
   text-align: center;
   white-space: nowrap;
 }
 
-.withr-dow-temp-max
+.dow-temp-max
 {
   font-size: 17px;
   font-weight: bold;
   white-space: nowrap;
 }
 
-.withr-dow .withr-condition-image
+.dow .condition-image
 {
   text-align: center;
   margin: -10px;
@@ -226,7 +226,7 @@
 
 /* hour sections */
 
-.withr-hour
+.hour
 {
   display: flex;
   align-items: center;
@@ -240,12 +240,12 @@
   cursor: pointer;
 }
 
-.withr-hour:hover
+.hour:hover
 {
   background-color: var(--button-color-hover);
 }
 
-.withr-hour > div
+.hour > div
 {
   display: flex;
   gap: 15px;
@@ -254,44 +254,44 @@
   flex: 1;
 }
 
-.withr-hour > div:last-child
+.hour > div:last-child
 {
   justify-content: flex-end;
 }
 
-.withr-hour-title
+.hour-title
 {
   width: 70px;
   text-align: right;
 }
 
-.withr-hour-temp
+.hour-temp
 {
   width: 40px;
   text-align: right;
   white-space: nowrap;
 }
 
-.withr-hour .withr-condition-image
+.hour .condition-image
 {
   text-align: center;
   margin: -10px -5px;
   height: 40px;
 }
 
-.withr-hour-description
+.hour-description
 {
   flex-grow: 1;
 }
 
-.withr-hour-precipitation-probability
+.hour-precipitation-probability
 {
   width: 60px;
   text-align: left;
   white-space: nowrap;
 }
 
-.withr-hour-wind
+.hour-wind
 {
   display: flex;
   gap: 5px;
@@ -299,21 +299,21 @@
   justify-content: left;
 }
 
-.withr-hour-fold-button
+.hour-fold-button
 {
   margin-right: 4px;
   width: 10px;
   text-align: center;
 }
 
-.withr-hour-folded
+.hour-folded
 {
   display: flex;
   gap: 5px;
   flex-wrap: wrap;
 }
 
-.withr-hour-folded > div
+.hour-folded > div
 {
   text-align: center;
   flex: 1 1 0px;
@@ -321,133 +321,133 @@
   white-space: nowrap;
 }
 
-.withr-hour-folded > div > div
+.hour-folded > div > div
 {
   margin: 5px;
 }
 
 @media only screen and (max-width: 700px) {
-  .withr-hour-folded > div
+  .hour-folded > div
   {
     flex: 1 1 45%;
   }
 }
 
-.withr-uv-index-no-risk
+.uv-index-no-risk
 {
 }
 
-.withr-uv-index-low
+.uv-index-low
 {
   color: #00ff00;
 }
 
-.withr-uv-index-moderate
+.uv-index-moderate
 {
   color: yellow;
 }
 
-.withr-uv-index-high
+.uv-index-high
 {
   color: orange;
 }
 
-.withr-uv-index-very-high
+.uv-index-very-high
 {
   color: red;
 }
 
-.withr-uv-index-extreme
+.uv-index-extreme
 {
   color: violet;
 }
 
 /* image */
 
-.withr-condition-image
+.condition-image
 {
   aspect-ratio: 1/1;
   background-size: contain;
 }
 
-.section.condition-clear .withr-condition-image,
-.section.condition-mainly-clear .withr-condition-image
+.section.condition-clear .condition-image,
+.section.condition-mainly-clear .condition-image
 {
   background-image: url('../images/conditions/clear-day.png')
 }
 
-.section.condition-clear.is-night .withr-condition-image,
-.section.condition-mainly-clear.is-night .withr-condition-image
+.section.condition-clear.is-night .condition-image,
+.section.condition-mainly-clear.is-night .condition-image
 {
   background-image: url('../images/conditions/clear-night.png')
 }
 
-.section.condition-cloudy .withr-condition-image
+.section.condition-cloudy .condition-image
 {
   background-image: url('../images/conditions/cloudy-day.png')
 }
 
-.section.condition-cloudy.is-night .withr-condition-image
+.section.condition-cloudy.is-night .condition-image
 {
   background-image: url('../images/conditions/cloudy-night.png')
 }
 
-.section.condition-overcast .withr-condition-image
+.section.condition-overcast .condition-image
 {
   background-image: url('../images/conditions/overcast.png')
 }
 
-.section.condition-fog .withr-condition-image,
-.section.condition-depositing-rime-fog .withr-condition-image
+.section.condition-fog .condition-image,
+.section.condition-depositing-rime-fog .condition-image
 {
   background-image: url('../images/conditions/fog.png')
 }
 
-.section.condition-drizzle-light .withr-condition-image,
-.section.condition-drizzle .withr-condition-image,
-.section.condition-drizzle-dense .withr-condition-image,
-.section.condition-freezing-drizzle-light .withr-condition-image,
-.section.condition-freezing-drizzle-dense .withr-condition-image
+.section.condition-drizzle-light .condition-image,
+.section.condition-drizzle .condition-image,
+.section.condition-drizzle-dense .condition-image,
+.section.condition-freezing-drizzle-light .condition-image,
+.section.condition-freezing-drizzle-dense .condition-image
 {
   background-image: url('../images/conditions/drizzle.png')
 }
 
-.section.condition-rain-slight .withr-condition-image,
-.section.condition-rain .withr-condition-image,
-.section.condition-rain-dense .withr-condition-image,
-.section.condition-freezing-rain-light .withr-condition-image,
-.section.condition-freezing-rain-dense .withr-condition-image,
-.section.condition-rain-showers-slight .withr-condition-image,
-.section.condition-rain-showers .withr-condition-image,
-.section.condition-rain-showers-violent .withr-condition-image
+.section.condition-rain-slight .condition-image,
+.section.condition-rain .condition-image,
+.section.condition-rain-dense .condition-image,
+.section.condition-freezing-rain-light .condition-image,
+.section.condition-freezing-rain-dense .condition-image,
+.section.condition-rain-showers-slight .condition-image,
+.section.condition-rain-showers .condition-image,
+.section.condition-rain-showers-violent .condition-image
 {
   background-image: url('../images/conditions/rain-day.png')
 }
 
-.section.condition-rain-slight.is-night .withr-condition-image,
-.section.condition-rain.is-night .withr-condition-image,
-.section.condition-rain-dense.is-night .withr-condition-image,
-.section.condition-freezing-rain-light.is-night .withr-condition-image,
-.section.condition-freezing-rain-dense.is-night .withr-condition-image,
-.section.condition-rain-showers-slight.is-night .withr-condition-image,
-.section.condition-rain-showers.is-night .withr-condition-image,
-.section.condition-rain-showers-violent.is-night .withr-condition-image
+.section.condition-rain-slight.is-night .condition-image,
+.section.condition-rain.is-night .condition-image,
+.section.condition-rain-dense.is-night .condition-image,
+.section.condition-freezing-rain-light.is-night .condition-image,
+.section.condition-freezing-rain-dense.is-night .condition-image,
+.section.condition-rain-showers-slight.is-night .condition-image,
+.section.condition-rain-showers.is-night .condition-image,
+.section.condition-rain-showers-violent.is-night .condition-image
 {
   background-image: url('../images/conditions/rain-night.png')
 }
 
-.section.condition-snow-slight .withr-condition-image,
-.section.condition-snow .withr-condition-image,
-.section.condition-snow-heavy .withr-condition-image,
-.section.condition-snow-grains .withr-condition-image,
-.section.condition-snow-showers-slight .withr-condition-image,
-.section.condition-snow-showers-heavy .withr-condition-image
+.section.condition-snow-slight .condition-image,
+.section.condition-snow .condition-image,
+.section.condition-snow-heavy .condition-image,
+.section.condition-snow-grains .condition-image,
+.section.condition-snow-showers-slight .condition-image,
+.section.condition-snow-showers-heavy .condition-image
 {
   background-image: url('../images/conditions/snow.png')
 }
 
-.section.condition-thunderstorm .withr-condition-image,
-.section.condition-thunderstorm-hail .withr-condition-image
+.section.condition-thunderstorm .condition-image,
+.section.condition-thunderstorm-hail .condition-image
 {
   background-image: url('../images/conditions/thunderstorm.png')
 }
@@ -455,10 +455,10 @@
 /*
 
 Target all images:
-  .section.<classes> .withr-condition-image
+  .section.<classes> .condition-image
 
 Target only the large image of the current section:
-  #current.<classes> .withr-condition-image
+  #current.<classes> .condition-image
 
 Target whole page:
   body.<classes>

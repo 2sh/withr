@@ -88,7 +88,7 @@ const theme = useLocalStorage<Theme>('theme',
 function setTheme()
 {
   document.documentElement.dataset.theme = theme.value
-  setBodyClass(theme.value, "withr-theme-")
+  setBodyClass(theme.value, "theme-")
 }
 watch(theme, setTheme)
 setTheme()
@@ -456,15 +456,15 @@ const options = ref({
     <div class="loading-image"></div>
   </div>
   <div v-else>
-    <div id="withr-options-section">
-      <div class="withr-options">
-        <button class="withr-search-button" @click="showSearch = true"><div></div></button>
-        <button class='withr-geolocate-button' @click="geolocate" v-if='isGeolocationAvailable' :disabled="geolocationLock"><div></div></button>
-        <button class='withr-options-button' @click="showOptions = !showOptions"><div></div></button>
+    <div id="options-section">
+      <div class="options">
+        <button class="search-button" @click="showSearch = true"><div></div></button>
+        <button class='geolocate-button' @click="geolocate" v-if='isGeolocationAvailable' :disabled="geolocationLock"><div></div></button>
+        <button class='options-button' @click="showOptions = !showOptions"><div></div></button>
       </div>
     </div>
-    <div  v-if="!data" id="withr-init-page">
-      <div id="withr-location-links" lang="en">
+    <div  v-if="!data" id="init-page">
+      <div id="location-links" lang="en">
         <RouterLink to="/39.8581,-4.02263:Toledo">Toledo</RouterLink>
         <RouterLink to="/43.60426,1.44367:Toulouse">Toulouse</RouterLink>
         <RouterLink to="/45.19205,9.15917:Pavia">Pavia</RouterLink>
@@ -473,97 +473,97 @@ const options = ref({
         <RouterLink to="/44.60795,33.52134:Sevastopol">Sevastopol</RouterLink>
       </div>
     </div>
-    <div v-if="data" id="withr-display">
-      <div id="withr-top">
-        <div id="withr-current" v-if="current" :class="['section', ...current.classes]">
-          <div class="withr-current-title">
+    <div v-if="data" id="display">
+      <div id="top">
+        <div id="current" v-if="current" :class="['section', ...current.classes]">
+          <div class="current-title">
             <span v-if="placeName">{{ t("ui.now_in") }} <span lang="en">{{ placeName }}</span></span>
             <span v-else>{{ t("ui.now") }}</span></div>
-          <div class="withr-current-content">
-            <div class="withr-condition-image">
+          <div class="current-content">
+            <div class="condition-image">
             </div>
-            <div class="withr-current-details">
-              <div class="withr-current-temp"><span v-html="current.temp"></span>{{ $t('tempSymbols.' + tempUnit) }}</div>
+            <div class="current-details">
+              <div class="current-temp"><span v-html="current.temp"></span>{{ $t('tempSymbols.' + tempUnit) }}</div>
             </div>
           </div>
-          <div class="withr-current-details-line">
-            <div class="withr-current-description">{{
+          <div class="current-details-line">
+            <div class="current-description">{{
               $t("conditionDescription." + current.conditionKey, {
                 context: current.isDay ? 'day' : 'night'
               }) }}</div>
-            <div class="withr-current-wind">
-              <div class="withr-current-wind-direction" :style="{transform: `rotate(${180+current.windDirection}deg)`}">↑</div>
-              <div class="withr-current-wind-compass-direction" v-html="current.windCompassDirection"></div>
-              <div class="withr-current-wind-speed" v-html="current.windSpeed"></div>
+            <div class="current-wind">
+              <div class="current-wind-direction" :style="{transform: `rotate(${180+current.windDirection}deg)`}">↑</div>
+              <div class="current-wind-compass-direction" v-html="current.windCompassDirection"></div>
+              <div class="current-wind-speed" v-html="current.windSpeed"></div>
             </div>
           </div>
-          <div class="withr-current-datetime">
+          <div class="current-datetime">
             <span v-html="current.formattedDate"></span>
           </div>
         </div>
       </div>
-      <div id="withr-dow-row">
+      <div id="dow-row">
         <template v-for="(day, index) in days">
-          <div :class="[ 'withr-dow', 'section',
+          <div :class="[ 'dow', 'section',
             ...day.classes,
-            { 'withr-dow-day': true, 'withr-dow-day-selected': selectedDayIndex == index }]"
+            { 'dow-day': true, 'dow-day-selected': selectedDayIndex == index }]"
               @click="selectedDayIndex = index">
-            <div class="withr-dow-title">{{ day.title }}</div>
-            <div class="withr-dow-lower">
-              <div class="withr-condition-image"></div>
-              <div class="withr-dow-temp">
-                <div class="withr-dow-temp-max" v-html="day.tempMax"></div>
-                <div class="withr-dow-temp-min" v-html="day.tempMin"></div>
+            <div class="dow-title">{{ day.title }}</div>
+            <div class="dow-lower">
+              <div class="condition-image"></div>
+              <div class="dow-temp">
+                <div class="dow-temp-max" v-html="day.tempMax"></div>
+                <div class="dow-temp-min" v-html="day.tempMin"></div>
               </div>
             </div>
           </div>
         </template>
       </div>
-      <div id="withr-hours">
+      <div id="hours">
         <template v-for="hour in hours">
-          <div :class="['withr-hour', 'section', ...hour.classes]"
+          <div :class="['hour', 'section', ...hour.classes]"
             @click="hour.isFoldedSectionVisible = !hour.isFoldedSectionVisible">
             <div>
-              <div class="withr-hour-title" v-html="hour.title"></div>
-              <div class="withr-hour-temp" v-html="hour.temp"></div>
-              <div class="withr-condition-image"></div>
-              <div class="withr-hour-description">{{
+              <div class="hour-title" v-html="hour.title"></div>
+              <div class="hour-temp" v-html="hour.temp"></div>
+              <div class="condition-image"></div>
+              <div class="hour-description">{{
                 $t("conditionDescription." + hour.conditionKey, {
                   context: hour.isDay ? 'day' : 'night'
                 }) }}</div>
             </div>
             <div>
-              <div class="withr-hour-precipitation-probability" v-html="hour.precipitationProbability"></div>
-              <div class="withr-hour-wind">
-                <div class="withr-hour-wind-direction" :style="{transform: `rotate(${180+hour.windDirection}deg)`}">↑</div>
-                <div class="withr-hour-wind-compass-direction" v-html="hour.windCompassDirection"></div>
-                <div class="withr-hour-wind-speed" v-html="hour.windSpeed"></div>
+              <div class="hour-precipitation-probability" v-html="hour.precipitationProbability"></div>
+              <div class="hour-wind">
+                <div class="hour-wind-direction" :style="{transform: `rotate(${180+hour.windDirection}deg)`}">↑</div>
+                <div class="hour-wind-compass-direction" v-html="hour.windCompassDirection"></div>
+                <div class="hour-wind-speed" v-html="hour.windSpeed"></div>
               </div>
-              <div class="withr-hour-fold-button">
+              <div class="hour-fold-button">
                 <span v-if="hour.isFoldedSectionVisible">-</span>
                 <span v-else>+</span>
               </div>
             </div>
           </div>
-          <div class="withr-hour-folded" v-if="hour.isFoldedSectionVisible">
+          <div class="hour-folded" v-if="hour.isFoldedSectionVisible">
             <div>
               <div>{{ $t("ui.apparent_temp") }}</div>
-              <div class="withr-apparent-temp" v-html="hour.apparentTemp"></div>
+              <div class="apparent-temp" v-html="hour.apparentTemp"></div>
             </div>
             <div>
               <div>{{ $t("ui.uv_index") }}</div>
-              <div class="withr-uv-index">
+              <div class="uv-index">
                 <span v-html="hour.uvIndex"></span>
-                <span :class="['withr-uv-index-' + hour.uvIndexRisk]"> ⬤</span>
+                <span :class="['uv-index-' + hour.uvIndexRisk]"> ⬤</span>
               </div>
             </div>
             <div>
               <div>{{ $t("ui.precipitation") }}</div>
-              <div class="withr-precipitation" v-html="hour.precipitation"></div>
+              <div class="precipitation" v-html="hour.precipitation"></div>
             </div>
             <div>
               <div>{{ $t("ui.humidity") }}</div>
-              <div class="withr-humidity" v-html="hour.humidity"></div>
+              <div class="humidity" v-html="hour.humidity"></div>
             </div>
           </div>
         </template>
