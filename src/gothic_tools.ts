@@ -11,7 +11,6 @@ function toGothicFractionalValue(value: number, denominator: null | number = nul
   const fractionalValue = Math.round((Math.abs(value) % 1) * denominator)
   if (!fractionalValue) return ''
 
-  console.log(fractionalValue)
   const gothicNumerator = toGothicNumerals(fractionalValue)
   const gothicDenominator = toGothicNumerals(denominator)
   return `<sup>${gothicNumerator}</sup><span class='frac-div'>&frasl;</span><sub>${gothicDenominator}</sub>`
