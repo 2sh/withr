@@ -429,8 +429,6 @@ function handleSetSearch(result: SearchResult)
 {
   const pathEnd = !result.name ? '' : (':' + result.name.replaceAll(' ', '_'))
   router.replace(`/${result.lat},${result.long}${pathEnd}`)
-  data.value = null
-  getData()
   showSearch.value = false
 }
 
