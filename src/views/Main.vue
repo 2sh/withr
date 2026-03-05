@@ -237,7 +237,7 @@ function getDays()
     const conditionKey = owmKeyMapping[data.value.daily.weather_code[i]!]!
     const classes = [
       `withr-section-condition-${conditionKey.replaceAll('_', '-')}`,
-      'withr-section-tod-day',
+      'withr-section-is-day',
     ]
     days.push({
       title,
@@ -291,7 +291,7 @@ function getHour(object: WeatherDataHour|WeatherDataHourly, index = -1,
 
   const classes = [
     `withr-section-condition-${conditionKey.replaceAll('_', '-')}`,
-    `withr-section-tod-${isDay ? 'day' : 'night'}`,
+    `withr-section-is-${isDay ? 'day' : 'night'}`,
   ]
   if (isMoonVisible)
     classes.push('withr-section-moon')
@@ -354,7 +354,7 @@ watch(() => current.value ? current.value.conditionKey : null,
   conditionKey => setBodyClass(conditionKey, 'withr-page-current-condition-'))
 
 watch(() => current.value ? current.value.isDay : null,
-  isDay => setBodyClass(isDay ? 'day' : 'night', 'withr-page-current-'))
+  isDay => setBodyClass(isDay ? 'day' : 'night', 'withr-page-current-is-'))
 
 watch(() => current.value ? current.value.isMoonVisible : null,
   isMoonVisible => document.body.classList.toggle('withr-page-current-moon', !!isMoonVisible))

@@ -370,24 +370,24 @@
   background-size: contain;
 }
 
-.withr-section-condition-clear.withr-section-tod-day .withr-condition-image,
-.withr-section-condition-mainly-clear.withr-section-tod-day .withr-condition-image
+.withr-section-condition-clear.withr-section-is-day .withr-condition-image,
+.withr-section-condition-mainly-clear.withr-section-is-day .withr-condition-image
 {
   background-image: url('../images/conditions/clear-day.png')
 }
 
-.withr-section-condition-clear.withr-section-tod-night .withr-condition-image,
-.withr-section-condition-mainly-clear.withr-section-tod-night .withr-condition-image
+.withr-section-condition-clear.withr-section-is-night .withr-condition-image,
+.withr-section-condition-mainly-clear.withr-section-is-night .withr-condition-image
 {
   background-image: url('../images/conditions/clear-night.png')
 }
 
-.withr-section-condition-cloudy.withr-section-tod-day .withr-condition-image
+.withr-section-condition-cloudy.withr-section-is-day .withr-condition-image
 {
   background-image: url('../images/conditions/cloudy-day.png')
 }
 
-.withr-section-condition-cloudy.withr-section-tod-night .withr-condition-image
+.withr-section-condition-cloudy.withr-section-is-night .withr-condition-image
 {
   background-image: url('../images/conditions/cloudy-night.png')
 }
@@ -412,26 +412,26 @@
   background-image: url('../images/conditions/drizzle.png')
 }
 
-.withr-section-condition-rain-slight.withr-section-tod-day .withr-condition-image,
-.withr-section-condition-rain.withr-section-tod-day .withr-condition-image,
-.withr-section-condition-rain-dense.withr-section-tod-day .withr-condition-image,
-.withr-section-condition-freezing-rain-light.withr-section-tod-day .withr-condition-image,
-.withr-section-condition-freezing-rain-dense.withr-section-tod-day .withr-condition-image,
-.withr-section-condition-rain-showers-slight.withr-section-tod-day .withr-condition-image,
-.withr-section-condition-rain-showers.withr-section-tod-day .withr-condition-image,
-.withr-section-condition-rain-showers-violent.withr-section-tod-day .withr-condition-image
+.withr-section-condition-rain-slight.withr-section-is-day .withr-condition-image,
+.withr-section-condition-rain.withr-section-is-day .withr-condition-image,
+.withr-section-condition-rain-dense.withr-section-is-day .withr-condition-image,
+.withr-section-condition-freezing-rain-light.withr-section-is-day .withr-condition-image,
+.withr-section-condition-freezing-rain-dense.withr-section-is-day .withr-condition-image,
+.withr-section-condition-rain-showers-slight.withr-section-is-day .withr-condition-image,
+.withr-section-condition-rain-showers.withr-section-is-day .withr-condition-image,
+.withr-section-condition-rain-showers-violent.withr-section-is-day .withr-condition-image
 {
   background-image: url('../images/conditions/rain-day.png')
 }
 
-.withr-section-condition-rain-slight.withr-section-tod-night .withr-condition-image,
-.withr-section-condition-rain.withr-section-tod-night .withr-condition-image,
-.withr-section-condition-rain-dense.withr-section-tod-night .withr-condition-image,
-.withr-section-condition-freezing-rain-light.withr-section-tod-night .withr-condition-image,
-.withr-section-condition-freezing-rain-dense.withr-section-tod-night .withr-condition-image,
-.withr-section-condition-rain-showers-slight.withr-section-tod-night .withr-condition-image,
-.withr-section-condition-rain-showers.withr-section-tod-night .withr-condition-image,
-.withr-section-condition-rain-showers-violent.withr-section-tod-night .withr-condition-image
+.withr-section-condition-rain-slight.withr-section-is-night .withr-condition-image,
+.withr-section-condition-rain.withr-section-is-night .withr-condition-image,
+.withr-section-condition-rain-dense.withr-section-is-night .withr-condition-image,
+.withr-section-condition-freezing-rain-light.withr-section-is-night .withr-condition-image,
+.withr-section-condition-freezing-rain-dense.withr-section-is-night .withr-condition-image,
+.withr-section-condition-rain-showers-slight.withr-section-is-night .withr-condition-image,
+.withr-section-condition-rain-showers.withr-section-is-night .withr-condition-image,
+.withr-section-condition-rain-showers-violent.withr-section-is-night .withr-condition-image
 {
   background-image: url('../images/conditions/rain-night.png')
 }
