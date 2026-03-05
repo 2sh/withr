@@ -451,3 +451,33 @@
 {
   background-image: url('../images/conditions/thunderstorm.png')
 }
+
+/*
+
+Target all images:
+  .section .withr-condition-image
+
+Target only the large image of the current section:
+  #current .withr-condition-image
+
+When the moon is visible:
+  .moon-is-visible
+
+Phases of the moon:
+  .moon-new-moon
+  .moon-waning-crescent
+  .moon-third-quarter
+  .moon-waning-gibbous
+  .moon-full-moon
+  .moon-waxing-gibbous
+  .moon-first-quarter
+  .moon-waxing-crescent
+
+When it is night:
+  .is-night
+
+Weather conditions:
+  .condition-*
+    Check above for all of the conditions
+
+*/
