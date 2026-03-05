@@ -199,7 +199,7 @@ function formatHour(hour: Date)
       : hours.toString().padStart(2, '0')
   }
 
-  const is = hours >= 12
+  const isPm = hours >= 12
   const h = (hours % 12) || 12
   const fh = getGothicValue(h)
   const amPm = isPm ? t('ui.pm') : t('ui.am')
