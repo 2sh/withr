@@ -36,6 +36,7 @@ export type WeatherData = {
   daily: WeatherDataDaily,
   current: WeatherDataHour,
   utc_offset_seconds: number,
+  elevation: number,
 }
 
 
@@ -50,6 +51,8 @@ export type WithrDay = {
   tempMax: string,
   tempMin: string,
   conditionKey: string,
+
+  classes: string[],
 }
 
 export type WithHourSimple = {
@@ -72,6 +75,10 @@ export type WithHourSimple = {
   windSpeed: string,
   windCompassDirection: string,
   windDirection: number,
+
+  isMoonVisible: boolean,
+
+  classes: string[],
 }
 
 export type WithrHour = {

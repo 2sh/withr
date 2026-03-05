@@ -46,6 +46,8 @@ import { addOverlineHtml, toGothicValue } from '@/gothic_tools'
 import { setBodyClass } from '@/tools'
 const { i18next, t } = useTranslation();
 
+import * as Astronomy from "astronomy-engine"
+
 
 const determinedUnits = determineUnits()
 
@@ -98,6 +100,8 @@ const placeName = ref<string | null>(null)
 
 const data = ref<WeatherData | null>(null)
 const currentTime = computed(() => data.value ? new Date(data.value.current.time) : null)
+const astroObserver = computed(() => !data.value || !lat.value || !long.value ? null
+  : new Astronomy.Observer(lat.value, long.value, data.value.elevation))
 
 const isLoading = ref(false)
 let reloadData = false // unused for now
@@ -230,11 +234,17 @@ function getDays()
     const day = new Date(data.value.daily.time[i]! + 'T00:00:00')
     const title = i == 0
       ? t('today.long') : t(`weekdays.${day.getDay()}.long`)
+    const conditionKey = owmKeyMapping[data.value.daily.weather_code[i]!]!
+    const classes = [
+      `withr-section-condition-${conditionKey.replaceAll('_', '-')}`,
+      'withr-section-tod-day',
+    ]
     days.push({
       title,
       tempMax: formatTemp(data.value.daily.temperature_2m_max[i]),
       tempMin: formatTemp(data.value.daily.temperature_2m_min[i]),
-      conditionKey: owmKeyMapping[data.value.daily.weather_code[i]!]!,
+      conditionKey,
+      classes,
     })
   }
   return days
@@ -245,8 +255,24 @@ function getValue<Type>(value: Type|Type[], index: number)
   return Array.isArray(value) ? value[index] : value
 }
 
+function getMoonVisiblity(date: Date)
+{
+  if (!astroObserver.value) return false
+  const moonRise = Astronomy.SearchRiseSet(Astronomy.Body.Moon, astroObserver.value, -1, date, 1)
+  const moonSet = Astronomy.SearchRiseSet(Astronomy.Body.Moon, astroObserver.value, 1, date, 1)
+  if (!moonRise || !moonSet) return false
+  return moonRise.date < moonSet.date
+}
 
-function getHour(object: WeatherDataHour|WeatherDataHourly, index = -1): WithHourSimple
+function addHalfHour(date: Date)
+{
+  const newDate = new Date(date)
+  newDate.setMinutes(30)
+  return newDate
+}
+
+function getHour(object: WeatherDataHour|WeatherDataHourly, index = -1,
+  contextIsFullHour=false): WithHourSimple
 {
   const weatherCode = getValue(object.weather_code, index) || 0
   const isDay = !!getValue(object.is_day, index)
@@ -258,12 +284,24 @@ function getHour(object: WeatherDataHour|WeatherDataHourly, index = -1): WithHou
   const uvIndexRisk = uvIndexRiskMapping[
     uvIndexRiskMapping.findIndex(([v,_]) => uvIndex < v)-1]![1]
 
+  const targetDate = contextIsFullHour ? addHalfHour(date) : date
+  const isMoonVisible = getMoonVisiblity(targetDate)
+
+  const conditionKey = owmKeyMapping[weatherCode]!
+
+  const classes = [
+    `withr-section-condition-${conditionKey.replaceAll('_', '-')}`,
+    `withr-section-tod-${isDay ? 'day' : 'night'}`,
+  ]
+  if (isMoonVisible)
+    classes.push('withr-section-moon')
+
   return {
     formattedDate: formatDate(date),
 
     isFoldedSectionVisible: false,
 
-    conditionKey: owmKeyMapping[weatherCode]!,
+    conditionKey,
     isDay,
 
     temp: formatTemp(getValue(object.temperature_2m, index)),
@@ -278,6 +316,10 @@ function getHour(object: WeatherDataHour|WeatherDataHourly, index = -1): WithHou
     windSpeed: formatSpeed(getValue(object.wind_speed_10m, index)),
     windCompassDirection: formatCompassDirection(windDirection),
     windDirection: windDirection!,
+
+    isMoonVisible,
+
+    classes,
   }
 }
 
@@ -297,7 +339,7 @@ function getHours()
     const hour = new Date(data.value.hourly.time[hourIndex]!)
     hours.push({
       title: formatHour(hour),
-      ...getHour(data.value.hourly, hourIndex)
+      ...getHour(data.value.hourly, hourIndex, true)
     })
   }
   return hours
@@ -309,11 +351,13 @@ watchEffect(() => { hours.value = getHours() })
 const current = computed(() => !data.value ? null : getHour(data.value.current))
 
 watch(() => current.value ? current.value.conditionKey : null,
-  conditionKey => setBodyClass(conditionKey, 'withr-day-condition-'))
+  conditionKey => setBodyClass(conditionKey, 'withr-page-current-condition-'))
 
 watch(() => current.value ? current.value.isDay : null,
-  isDay => setBodyClass(isDay ? 'day' : 'night', 'withr-day-tod-'))
+  isDay => setBodyClass(isDay ? 'day' : 'night', 'withr-page-current-'))
 
+watch(() => current.value ? current.value.isMoonVisible : null,
+  isMoonVisible => document.body.classList.toggle('withr-page-current-moon', !!isMoonVisible))
 
 /* routing */
 
@@ -438,10 +482,7 @@ const options = ref({
     </div>
     <div v-if="data" id="withr-display">
       <div id="withr-top">
-        <div id="withr-current" v-if="current"
-          :class="[
-            `withr-section-condition-${current.conditionKey.replaceAll('_', '-')}`,
-            `withr-section-tod-${current.isDay ? 'day' : 'night'}`]">
+        <div id="withr-current" v-if="current" :class="current.classes">
           <div class="withr-current-title">
             <span v-if="placeName">{{ t("ui.now_in") }} <span lang="en">{{ placeName }}</span></span>
             <span v-else>{{ t("ui.now") }}</span></div>
@@ -471,8 +512,7 @@ const options = ref({
       <div id="withr-dow-row">
         <template v-for="(day, index) in days">
           <div :class="[ 'withr-dow',
-            `withr-section-condition-${day.conditionKey.replaceAll('_', '-')}`,
-            `withr-section-tod-day`,
+            ...day.classes,
             { 'withr-dow-day': true, 'withr-dow-day-selected': selectedDayIndex == index }]"
               @click="selectedDayIndex = index">
             <div class="withr-dow-title">{{ day.title }}</div>
@@ -488,9 +528,7 @@ const options = ref({
       </div>
       <div id="withr-hours">
         <template v-for="hour in hours">
-          <div :class="['withr-hour',
-            `withr-section-condition-${hour.conditionKey.replaceAll('_', '-')}`,
-            `withr-section-tod-${hour.isDay ? 'day' : 'night'}`]"
+          <div :class="['withr-hour', ...hour.classes]"
             @click="hour.isFoldedSectionVisible = !hour.isFoldedSectionVisible">
             <div>
               <div class="withr-hour-title" v-html="hour.title"></div>
