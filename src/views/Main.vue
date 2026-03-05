@@ -26,6 +26,7 @@ import {
   angleToCompassIndex,
   determineUnits,
   distanceConversionMap,
+  getMoonPhase,
   owmKeyMapping,
   speedConverionMap,
   temperatureConversionMap,
@@ -236,8 +237,8 @@ function getDays()
       ? t('today.long') : t(`weekdays.${day.getDay()}.long`)
     const conditionKey = owmKeyMapping[data.value.daily.weather_code[i]!]!
     const classes = [
-      `withr-section-condition-${conditionKey.replaceAll('_', '-')}`,
-      'withr-section-is-day',
+      `condition-${conditionKey.replaceAll('_', '-')}`,
+      'is-day',
     ]
     days.push({
       title,
@@ -288,13 +289,15 @@ function getHour(object: WeatherDataHour|WeatherDataHourly, index = -1,
   const isMoonVisible = getMoonVisiblity(targetDate)
 
   const conditionKey = owmKeyMapping[weatherCode]!
+  const moonPhase = getMoonPhase(targetDate)
 
   const classes = [
-    `withr-section-condition-${conditionKey.replaceAll('_', '-')}`,
-    `withr-section-is-${isDay ? 'day' : 'night'}`,
+    `condition-${conditionKey.replaceAll('_', '-')}`,
+    `moon-${moonPhase.replaceAll('_', '-')}`,
   ]
-  if (isMoonVisible)
-    classes.push('withr-section-moon')
+
+  if (isMoonVisible) classes.push('moon-is-visible')
+  if (!isDay) classes.push('is-night')
 
   return {
     formattedDate: formatDate(date),
@@ -350,14 +353,7 @@ const hours = ref<WithrHour[]>([])
 watchEffect(() => { hours.value = getHours() })
 const current = computed(() => !data.value ? null : getHour(data.value.current))
 
-watch(() => current.value ? current.value.conditionKey : null,
-  conditionKey => setBodyClass(conditionKey, 'withr-page-current-condition-'))
-
-watch(() => current.value ? current.value.isDay : null,
-  isDay => setBodyClass(isDay ? 'day' : 'night', 'withr-page-current-is-'))
-
-watch(() => current.value ? current.value.isMoonVisible : null,
-  isMoonVisible => document.body.classList.toggle('withr-page-current-moon', !!isMoonVisible))
+watch(current, c => document.body.className = !c ? '' : c.classes.join(' '))
 
 /* routing */
 
@@ -480,7 +476,7 @@ const options = ref({
     </div>
     <div v-if="data" id="withr-display">
       <div id="withr-top">
-        <div id="withr-current" v-if="current" :class="current.classes">
+        <div id="withr-current" v-if="current" :class="['section', ...current.classes]">
           <div class="withr-current-title">
             <span v-if="placeName">{{ t("ui.now_in") }} <span lang="en">{{ placeName }}</span></span>
             <span v-else>{{ t("ui.now") }}</span></div>
@@ -509,7 +505,7 @@ const options = ref({
       </div>
       <div id="withr-dow-row">
         <template v-for="(day, index) in days">
-          <div :class="[ 'withr-dow',
+          <div :class="[ 'withr-dow', 'section',
             ...day.classes,
             { 'withr-dow-day': true, 'withr-dow-day-selected': selectedDayIndex == index }]"
               @click="selectedDayIndex = index">
@@ -526,7 +522,7 @@ const options = ref({
       </div>
       <div id="withr-hours">
         <template v-for="hour in hours">
-          <div :class="['withr-hour', ...hour.classes]"
+          <div :class="['withr-hour', 'section', ...hour.classes]"
             @click="hour.isFoldedSectionVisible = !hour.isFoldedSectionVisible">
             <div>
               <div class="withr-hour-title" v-html="hour.title"></div>

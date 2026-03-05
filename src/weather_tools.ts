@@ -126,6 +126,24 @@ export const uvIndexRiskMapping: [number, string][] = [
   [ 11, 'extreme' ],
 ]
 
+export const moonPhases = [
+  'new_moon',
+  'waning_crescent',
+  'third_quarter',
+  'waning_gibbous',
+  'full_moon',
+  'waxing_gibbous',
+  'first_quarter',
+  'waxing_crescent',
+]
+
+import { MoonPhase } from "astronomy-engine"
+
+export function getMoonPhase(date: Date)
+{
+  return moonPhases[Math.round(MoonPhase(date)/45)%8]!
+}
+
 type Converter = (value: number) => number
 type ConversionMap = {
   [key: string]: Converter
