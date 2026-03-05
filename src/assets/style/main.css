@@ -42,7 +42,7 @@
 
 @font-face {
   font-family: 'Noto Sans Gothic';
-  src: url('../assets/fonts/NotoSansGothic-Regular.woff2') format('woff2');
+  src: url('../fonts/NotoSansGothic-Regular.woff2') format('woff2');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
