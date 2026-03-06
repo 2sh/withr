@@ -467,6 +467,9 @@ The body gets the same classes as the #current section
 
 The classes:
 
+When it is night:
+  .night
+
 When the moon is visible:
   .moon
 
@@ -480,7 +483,7 @@ Phases of the moon:
   .third-quarter
   .waning-crescent
 
-Wind descriptions following the Beaufort wind scale (0-12) (https://www.weather.gov/mfl/beaufort):
+Beaufort wind scale (0-12) (https://www.weather.gov/mfl/beaufort):
   .calm
   .light_air
   .light_breeze
@@ -494,9 +497,6 @@ Wind descriptions following the Beaufort wind scale (0-12) (https://www.weather.
   .storm
   .violent_storm
   .hurricane
-
-When it is night:
-  .night
 
 Weather conditions all listed above
 
