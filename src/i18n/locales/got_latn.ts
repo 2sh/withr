@@ -122,17 +122,17 @@ const conditionDescription: { [conditionKey: string]: string | {[condition: stri
     night: "Skeir mikilaba",
   }, // du dailai maistai? or something with filaus?
   "cloudy": "Milhmag", // just making it "cloudy" but could add suman for the partly bit
-  "overcast": "Ufarskadwiþ",
+  "overcast": "Ufarskadwiþ", // 'warþ milhma jah ufarskadwida ins' Luke 9:34
 
   "fog": "Nibls",
   "depositing_rime_fog": "Nibls friusands",
 
-  "drizzle_light": "Ufartrusnjando leitil",
-  "drizzle": "Ufartrusnjando",
-  "drizzle_dense": "Ufartrusnjando filu",
+  "drizzle_light": "Hnasqu rign leitil",
+  "drizzle": "Hnasqu rign",
+  "drizzle_dense": "Hnasqaus rignis filu",
 
-  "freezing_drizzle_light": "Ufartrusnjando friusando leitil",
-  "freezing_drizzle_dense": "Ufartrusnjando friusando filu ",
+  "freezing_drizzle_light": "Hnasqu rign friusando leitil",
+  "freezing_drizzle_dense": "Hnasqaus rignis friusandndins filu",
 
   "rain_slight": "Rign leitil",
   "rain": "Rign",
