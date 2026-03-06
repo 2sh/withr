@@ -376,8 +376,8 @@
   background-image: url('../images/conditions/clear-day.png')
 }
 
-.section.clear.night .image,
-.section.mainly-clear.night .image
+.section.night.clear .image,
+.section.night.mainly-clear .image
 {
   background-image: url('../images/conditions/clear-night.png')
 }
@@ -387,7 +387,7 @@
   background-image: url('../images/conditions/cloudy-day.png')
 }
 
-.section.cloudy.night .image
+.section.night.cloudy .image
 {
   background-image: url('../images/conditions/cloudy-night.png')
 }
@@ -424,14 +424,14 @@
   background-image: url('../images/conditions/rain-day.png')
 }
 
-.section.rain-slight.night .image,
-.section.rain.night .image,
-.section.rain-dense.night .image,
-.section.freezing-rain-light.night .image,
-.section.freezing-rain-dense.night .image,
-.section.rain-showers-slight.night .image,
-.section.rain-showers.night .image,
-.section.rain-showers-violent.night .image
+.section.night.rain-slight .image,
+.section.night.rain .image,
+.section.night.rain-dense .image,
+.section.night.freezing-rain-light .image,
+.section.night.freezing-rain-dense .image,
+.section.night.rain-showers-slight .image,
+.section.night.rain-showers .image,
+.section.night.rain-showers-violent .image
 {
   background-image: url('../images/conditions/rain-night.png')
 }
