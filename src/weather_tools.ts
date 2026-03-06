@@ -169,11 +169,10 @@ export const windScale = [
   'hurricane',
 ]
 
-export function getWindScale(windSpeed: number)
+export function getWindScaleIndex(windSpeed: number)
 {
   const index = Math.round(speedConverionMap.bft!(windSpeed))
-  if (index > 12) return windScale[12]!
-  return windScale[index]!
+  return index > 12 ? 12 : index
 }
 
 type Converter = (value: number) => number

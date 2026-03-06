@@ -29,11 +29,12 @@ import {
   distanceConversionMap,
   getMoonPhase,
   getMoonVisiblity,
-  getWindScale,
+  getWindScaleIndex,
   owmKeyMapping,
   speedConverionMap,
   temperatureConversionMap,
-  uvIndexRiskMapping
+  uvIndexRiskMapping,
+  windScale
 } from '../weather_tools'
 
 
@@ -254,16 +255,19 @@ function getDays()
     const title = i == 0
       ? t('today.long') : t(`weekdays.${day.getDay()}.long`)
     const conditionKey = owmKeyMapping[data.value.daily.weather_code[i]!]!
-    const windScale = getWindScale(data.value.daily.wind_speed_10m_max[i]!)
+    const windScaleIndex = getWindScaleIndex(data.value.daily.wind_speed_10m_max[i]!)
+    const windScaleKey = windScale[windScaleIndex]!
     const classes = [
       conditionKey.replaceAll('_', '-'),
-      windScale.replaceAll('_', '-'),
+      windScaleKey.replaceAll('_', '-'),
     ]
     days.push({
       title,
       tempMax: formatTemp(data.value.daily.temperature_2m_max[i]),
       tempMin: formatTemp(data.value.daily.temperature_2m_min[i]),
       conditionKey,
+      windScaleKey,
+      windScaleIndex,
       classes,
     })
   }
@@ -303,12 +307,13 @@ function getHour(object: WeatherDataHour|WeatherDataHourly, index = -1,
   const moonPhase = getMoonPhase(targetDate)
 
   const windSpeed = getValue(object.wind_speed_10m, index)
-  const windScale = getWindScale(windSpeed!)
+  const windScaleIndex = getWindScaleIndex(windSpeed!)
+  const windScaleKey = windScale[windScaleIndex]!
 
   const classes = [
     conditionKey.replaceAll('_', '-'),
+    windScaleKey.replaceAll('_', '-'),
     moonPhase.replaceAll('_', '-'),
-    windScale.replaceAll('_', '-'),
   ]
 
   if (isMoonVisible) classes.push('moon')
@@ -320,6 +325,8 @@ function getHour(object: WeatherDataHour|WeatherDataHourly, index = -1,
     isFoldedSectionVisible: false,
 
     conditionKey,
+    windScaleIndex,
+    windScaleKey,
     isDay,
 
     temp: formatTemp(getValue(object.temperature_2m, index)),
@@ -506,7 +513,7 @@ const options = ref({
             <div class="current-description">{{
               $t("conditionDescription." + current.conditionKey, {
                 context: current.isDay ? 'day' : 'night'
-              }) }}</div>
+              }) }}<span v-if="current.windScaleIndex >= 4"> / {{ $t("windDescription." + current.windScaleKey) }}</span></div>
             <div class="current-wind">
               <div class="current-wind-direction" :style="{transform: `rotate(${180+current.windDirection}deg)`}">↑</div>
               <div class="current-wind-compass-direction" v-html="current.windCompassDirection"></div>
@@ -543,10 +550,13 @@ const options = ref({
               <div class="hour-title" v-html="hour.title"></div>
               <div class="hour-temp" v-html="hour.temp"></div>
               <div class="image"></div>
-              <div class="hour-description">{{
+              <div class="hour-description">
+                <span>{{
                 $t("conditionDescription." + hour.conditionKey, {
                   context: hour.isDay ? 'day' : 'night'
-                }) }}</div>
+                }) }}</span>
+                <span v-if="hour.windScaleIndex >= 3"> / {{ $t("windDescription." + hour.windScaleKey) }}</span>
+              </div>
             </div>
             <div>
               <div class="hour-precipitation-probability" v-html="hour.precipitationProbability"></div>

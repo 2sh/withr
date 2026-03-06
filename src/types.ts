@@ -52,6 +52,8 @@ export type WithrDay = {
   tempMax: string,
   tempMin: string,
   conditionKey: string,
+  windScaleIndex: number,
+  windScaleKey: string,
 
   classes: string[],
 }
@@ -62,6 +64,7 @@ export type WithHourSimple = {
   isFoldedSectionVisible: boolean,
 
   conditionKey: string,
+  windScaleKey: string,
   isDay: boolean,
 
   temp: string,
@@ -74,6 +77,7 @@ export type WithHourSimple = {
   humidity: string,
 
   windSpeed: string,
+  windScaleIndex: number
   windCompassDirection: string,
   windDirection: number,
 

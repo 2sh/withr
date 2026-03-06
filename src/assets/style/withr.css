@@ -251,12 +251,12 @@
   gap: 15px;
   align-items: center;
   flex-wrap: nowrap;
-  flex: 1;
 }
 
 .hour > div:last-child
 {
   justify-content: flex-end;
+  flex: 1 0 0;
 }
 
 .hour-title

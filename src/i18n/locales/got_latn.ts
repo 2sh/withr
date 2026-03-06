@@ -158,6 +158,22 @@ const conditionDescription: { [conditionKey: string]: string | {[condition: stri
   "thunderstorm_hail": "Þeihwo miþ hagla",
 }
 
+const windDescription: { [scale: string]: string } = {
+  'calm': 'Wis',
+  'light_air': 'Neƕa wisa',
+  'light_breeze': 'Waiando leitil',
+  'gentle_breeze': 'Waiando',
+  'moderate_breeze': 'Waiando filu',
+  'fresh_breeze': 'Winds frisks',
+  'strong_breeze': 'Winds swinþs',
+  'near_gale': 'Winds mahteigs',
+  'gale': 'Winds skurags',
+  'strong_gale': 'Skura',
+  'storm': 'Skura swinþa',
+  'violent_storm': 'Skura mahteiga',
+  'hurricane': 'Skura abra',
+}
+
 const compassDirections =
   ["N", "NNA", "NA", "ANA",
    "A", "ASA", "SA", "SSA", // austra
@@ -188,6 +204,7 @@ export default {
   weekdays,
   months,
   conditionDescription,
+  windDescription,
   compassDirections,
   tempSymbols,
   windSpeedSymbols,
