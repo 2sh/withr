@@ -12,7 +12,8 @@ import type {
   SpeedUnit,
   GothicNumeralMode,
   PrecipitationUnit,
-  Theme
+  Theme,
+  WeatherDataDay
 } from '../types'
 
 import {
@@ -27,6 +28,7 @@ import {
   determineUnits,
   distanceConversionMap,
   getMoonPhase,
+  getWindScale,
   owmKeyMapping,
   speedConverionMap,
   temperatureConversionMap,
@@ -113,15 +115,30 @@ async function getData()
 
   isLoading.value = true
 
-  const hourParams = "is_day,weather_code,"
-    + "temperature_2m,apparent_temperature,uv_index,"
-    + "precipitation_probability,precipitation,relative_humidity_2m,"
-    + "wind_speed_10m,wind_direction_10m"
+  const hourParams: (keyof WeatherDataHour)[] = [
+    "is_day",
+    "weather_code",
+    "temperature_2m",
+    "apparent_temperature",
+    "uv_index",
+    "precipitation_probability",
+    "precipitation",
+    "relative_humidity_2m",
+    "wind_speed_10m",
+    "wind_direction_10m",
+  ]
+  const dailyParams: (keyof WeatherDataDay)[] = [
+    "weather_code",
+    "temperature_2m_min",
+    "temperature_2m_max",
+    "wind_speed_10m_max",
+  ]
+  const urlHourParams = hourParams.join(',')
   const url = "https://api.open-meteo.com/v1/forecast?"
     + "latitude=" + lat.value.toFixed(5) + "&longitude=" + long.value.toFixed(5)
-    + "&daily=weather_code,temperature_2m_min,temperature_2m_max"
-    + "&hourly=" + hourParams
-    + "&current=" + hourParams
+    + "&daily=" + dailyParams.join(',')
+    + "&hourly=" + urlHourParams
+    + "&current=" + urlHourParams
     + "&timezone=auto"
 
   const response = await fetch(url)
@@ -236,8 +253,10 @@ function getDays()
     const title = i == 0
       ? t('today.long') : t(`weekdays.${day.getDay()}.long`)
     const conditionKey = owmKeyMapping[data.value.daily.weather_code[i]!]!
+    const windScale = getWindScale(data.value.daily.wind_speed_10m_max[i]!)
     const classes = [
       conditionKey.replaceAll('_', '-'),
+      windScale.replaceAll('_', '-'),
     ]
     days.push({
       title,
@@ -290,9 +309,13 @@ function getHour(object: WeatherDataHour|WeatherDataHourly, index = -1,
   const conditionKey = owmKeyMapping[weatherCode]!
   const moonPhase = getMoonPhase(targetDate)
 
+  const windSpeed = getValue(object.wind_speed_10m, index)
+  const windScale = getWindScale(windSpeed!)
+
   const classes = [
     conditionKey.replaceAll('_', '-'),
     moonPhase.replaceAll('_', '-'),
+    windScale.replaceAll('_', '-'),
   ]
 
   if (isMoonVisible) classes.push('moon')
@@ -315,7 +338,7 @@ function getHour(object: WeatherDataHour|WeatherDataHourly, index = -1,
     precipitation: formatPrecipitation(getValue(object.precipitation, index)),
     humidity: formatPercentage(getValue(object.relative_humidity_2m, index)),
 
-    windSpeed: formatSpeed(getValue(object.wind_speed_10m, index)),
+    windSpeed: formatSpeed(windSpeed),
     windCompassDirection: formatCompassDirection(windDirection),
     windDirection: windDirection!,
 

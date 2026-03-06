@@ -144,6 +144,29 @@ export function getMoonPhase(date: Date)
   return moonPhases[Math.round(MoonPhase(date)/45)%8]!
 }
 
+export const windScale = [
+  'calm',
+  'light_air',
+  'light_breeze',
+  'gentle_breeze',
+  'moderate_breeze',
+  'fresh_breeze',
+  'strong_breeze',
+  'near_gale',
+  'gale',
+  'strong_gale',
+  'storm',
+  'violent_storm',
+  'hurricane',
+]
+
+export function getWindScale(windSpeed: number)
+{
+  const index = Math.round(speedConverionMap.bft!(windSpeed))
+  if (index > 12) return windScale[12]!
+  return windScale[index]!
+}
+
 type Converter = (value: number) => number
 type ConversionMap = {
   [key: string]: Converter

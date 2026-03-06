@@ -480,6 +480,21 @@ Phases of the moon:
   .third-quarter
   .waning-crescent
 
+Wind descriptions following the Beaufort wind scale (0-12) (https://www.weather.gov/mfl/beaufort):
+  .calm
+  .light_air
+  .light_breeze
+  .gentle_breeze
+  .moderate_breeze
+  .fresh_breeze
+  .strong_breeze
+  .near_gale
+  .gale
+  .strong_gale
+  .storm
+  .violent_storm
+  .hurricane
+
 When it is night:
   .night
 
