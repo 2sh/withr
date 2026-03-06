@@ -1,3 +1,8 @@
+.max-value
+{
+  font-weight: bold;
+}
+
 
 /* Options */
 
@@ -81,6 +86,36 @@
 {
   display: flex;
   justify-content: space-between;
+}
+
+
+/* data sections */
+
+.data-section
+{
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
+.data-section > div
+{
+  text-align: center;
+  flex: 1 1 0px;
+  background-color: var(--box-color);
+  white-space: nowrap;
+}
+
+.data-section > div > div
+{
+  margin: 5px;
+}
+
+@media only screen and (max-width: 700px) {
+  .data-section > div
+  {
+    flex: 1 1 45%;
+  }
 }
 
 
@@ -212,9 +247,8 @@
 
 .dow-temp-max
 {
-  font-size: 17px;
-  font-weight: bold;
   white-space: nowrap;
+  font-size: 17px;
 }
 
 .dow .image
@@ -224,7 +258,24 @@
   width: 80px;
 }
 
+/* day section */
+
+.day-top
+{
+  background-color: var(--box-color);
+  margin: 5px 0;
+  padding: 5px 7px;
+  display: flex;
+  gap: 20px;
+}
+
 /* hour sections */
+
+.hours-title
+{
+  font-size: 18px;
+  padding: 4px;
+}
 
 .hour
 {
@@ -304,33 +355,6 @@
   margin-right: 4px;
   width: 10px;
   text-align: center;
-}
-
-.hour-folded
-{
-  display: flex;
-  gap: 5px;
-  flex-wrap: wrap;
-}
-
-.hour-folded > div
-{
-  text-align: center;
-  flex: 1 1 0px;
-  background-color: var(--box-color);
-  white-space: nowrap;
-}
-
-.hour-folded > div > div
-{
-  margin: 5px;
-}
-
-@media only screen and (max-width: 700px) {
-  .hour-folded > div
-  {
-    flex: 1 1 45%;
-  }
 }
 
 .uv-index-no-risk

@@ -134,6 +134,14 @@ async function getData()
     "temperature_2m_min",
     "temperature_2m_max",
     "wind_speed_10m_max",
+    "uv_index_max",
+    "sunrise",
+    "sunset",
+    "precipitation_probability_max",
+    "relative_humidity_2m_min",
+    "relative_humidity_2m_max",
+    "apparent_temperature_min",
+    "apparent_temperature_max",
   ]
   const urlHourParams = hourParams.join(',')
   const url = "https://api.open-meteo.com/v1/forecast?"
@@ -251,23 +259,41 @@ function getDays()
   const days: WithrDay[] = []
   for (let i=0; i<7; i++)
   {
-    const day = new Date(data.value.daily.time[i]! + 'T00:00:00')
+    const date = new Date(data.value.daily.time[i]! + 'T00:00:00')
     const title = i == 0
-      ? t('today.long') : t(`weekdays.${day.getDay()}.long`)
+      ? t('today.long') : t(`weekdays.${date.getDay()}.long`)
     const conditionKey = owmKeyMapping[data.value.daily.weather_code[i]!]!
     const windScaleIndex = getWindScaleIndex(data.value.daily.wind_speed_10m_max[i]!)
     const windScaleKey = windScale[windScaleIndex]!
+
+    const uvIndexMax = Math.round(data.value.daily.uv_index_max[i]!)
+    const uvIndexMaxRisk = uvIndexRiskMapping[
+      uvIndexRiskMapping.findIndex(([v,_]) => uvIndexMax < v)-1]![1]
+
     const classes = [
       conditionKey.replaceAll('_', '-'),
       windScaleKey.replaceAll('_', '-'),
     ]
     days.push({
       title,
+      formattedDate: formatDate(date),
       tempMax: formatTemp(data.value.daily.temperature_2m_max[i]),
       tempMin: formatTemp(data.value.daily.temperature_2m_min[i]),
       conditionKey,
       windScaleKey,
       windScaleIndex,
+
+      uvIndexMax: getGothicValue(uvIndexMax),
+      uvIndexMaxRisk,
+
+      sunrise: '',
+      sunset: '',
+      precipitationProbabilityMax: formatPrecipitation(data.value.daily.precipitation_probability_max[i]),
+      humidityMin: formatPercentage(data.value.daily.relative_humidity_2m_min[i]),
+      humidityMax: formatPercentage(data.value.daily.relative_humidity_2m_max[i]),
+      apparentTempMin: formatTemp(data.value.daily.apparent_temperature_min[i]),
+      apparentTempMax: formatTemp(data.value.daily.apparent_temperature_max[i]),
+
       classes,
     })
   }
@@ -320,8 +346,6 @@ function getHour(object: WeatherDataHour|WeatherDataHourly, index = -1,
   if (!isDay) classes.push('night')
 
   return {
-    formattedDate: formatDate(date),
-
     isFoldedSectionVisible: false,
 
     conditionKey,
@@ -371,6 +395,7 @@ function getHours()
 }
 
 const days = computed(() => getDays())
+const day = computed(() => days.value[selectedDayIndex.value] || null )
 const hours = ref<WithrHour[]>([])
 watchEffect(() => { hours.value = getHours() })
 const current = computed(() => !data.value ? null : getHour(data.value.current))
@@ -520,9 +545,6 @@ const options = ref({
               <div class="current-wind-speed" v-html="current.windSpeed"></div>
             </div>
           </div>
-          <div class="current-datetime">
-            <span v-html="current.formattedDate"></span>
-          </div>
         </div>
       </div>
       <div id="dow-row">
@@ -535,13 +557,52 @@ const options = ref({
             <div class="dow-lower">
               <div class="image"></div>
               <div class="dow-temp">
-                <div class="dow-temp-max" v-html="day.tempMax"></div>
+                <div class="dow-temp-max max-value" v-html="day.tempMax"></div>
                 <div class="dow-temp-min" v-html="day.tempMin"></div>
               </div>
             </div>
           </div>
         </template>
       </div>
+      <div id="day" v-if="day">
+        <div class="day-top">
+          <div class="day-datetime">
+            <span v-html="day.formattedDate"></span>
+          </div>
+          <div class="day-description">
+            <span>{{
+              $t("conditionDescription." + day.conditionKey, {
+              context: selectedDayIndex == 0 && !current?.isDay ? 'night' : 'day' }) }}</span>
+            <span v-if="day.windScaleIndex >= 3"> / {{ $t("windDescription." + day.windScaleKey) }}</span>
+          </div>
+        </div>
+        <div class="day-data data-section">
+          <div>
+            <div>{{ $t("ui.apparent_temp") }}</div>
+            <div class="apparent-temp">
+              <span class="max-value" v-html="day.apparentTempMax"></span> <span v-html="day.apparentTempMin"></span>
+            </div>
+          </div>
+          <div>
+            <div>{{ $t("ui.uv_index") }}</div>
+            <div class="uv-index">
+              <span v-html="day.uvIndexMax"></span>
+              <span :class="['uv-index-' + day.uvIndexMaxRisk]"> ⬤</span>
+            </div>
+          </div>
+          <div>
+            <div>{{ $t("ui.precipitation") }}</div>
+            <div class="precipitation" v-html="day.precipitationProbabilityMax"></div>
+          </div>
+          <div>
+            <div>{{ $t("ui.humidity") }}</div>
+            <div class="humidity">
+              <span class="max-value" v-html="day.humidityMax"></span> <span v-html="day.humidityMin"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="hours-title">Ƕeilos Dagis</div>
       <div id="hours">
         <template v-for="hour in hours">
           <div :class="['hour', 'section', ...hour.classes]"
@@ -571,7 +632,7 @@ const options = ref({
               </div>
             </div>
           </div>
-          <div class="hour-folded" v-if="hour.isFoldedSectionVisible">
+          <div class="hour-folded data-section" v-if="hour.isFoldedSectionVisible">
             <div>
               <div>{{ $t("ui.apparent_temp") }}</div>
               <div class="apparent-temp" v-html="hour.apparentTemp"></div>

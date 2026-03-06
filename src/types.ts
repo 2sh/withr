@@ -28,6 +28,15 @@ export type WeatherDataDay = {
   temperature_2m_min: number,
   wind_speed_10m_max: number,
   weather_code: number,
+
+  uv_index_max: number,
+  sunrise: string,
+  sunset: string,
+  precipitation_probability_max: number,
+  relative_humidity_2m_min: number,
+  relative_humidity_2m_max: number,
+  apparent_temperature_min: number,
+  apparent_temperature_max: number,
 }
 
 export type WeatherDataDaily = ArrayObject<WeatherDataDay>
@@ -49,18 +58,27 @@ export type LongShortNarrowName = {
 
 export type WithrDay = {
   title: string,
+  formattedDate: string,
   tempMax: string,
   tempMin: string,
   conditionKey: string,
   windScaleIndex: number,
   windScaleKey: string,
 
+  uvIndexMax: string,
+  uvIndexMaxRisk: string,
+  sunrise: string,
+  sunset: string,
+  precipitationProbabilityMax: string,
+  humidityMin: string,
+  humidityMax: string,
+  apparentTempMin: string,
+  apparentTempMax: string,
+
   classes: string[],
 }
 
 export type WithHourSimple = {
-  formattedDate: string,
-
   isFoldedSectionVisible: boolean,
 
   conditionKey: string,
