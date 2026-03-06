@@ -457,7 +457,7 @@
 Target all images:
   .section.<classes> .image
 
-Target only the large image of the current section:
+Target only the large image of the #current section:
   #current.<classes> .image
 
 Target whole page:
