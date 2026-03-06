@@ -127,12 +127,12 @@ const conditionDescription: { [conditionKey: string]: string | {[condition: stri
   "fog": "Nibls",
   "depositing_rime_fog": "Nibls friusands",
 
-  "drizzle_light": "Hnasqu rign leitil",
-  "drizzle": "Hnasqu rign",
-  "drizzle_dense": "Hnasqaus rignis filu",
+  "drizzle_light": "Rign hnasqu leitil",
+  "drizzle": "Rign hnasqu",
+  "drizzle_dense": "Rignis hnasqaus filu",
 
-  "freezing_drizzle_light": "Hnasqu rign friusando leitil",
-  "freezing_drizzle_dense": "Hnasqaus rignis friusandndins filu",
+  "freezing_drizzle_light": "Rign hnasqu friusando leitil",
+  "freezing_drizzle_dense": "Rignis hnasqaus friusandndins filu",
 
   "rain_slight": "Rign leitil",
   "rain": "Rign",
