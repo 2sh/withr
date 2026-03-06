@@ -137,11 +137,20 @@ export const moonPhases = [
   'waning_crescent',
 ]
 
-import { MoonPhase } from "astronomy-engine"
+import type { Observer } from "astronomy-engine"
+import * as Astronomy from "astronomy-engine"
 
 export function getMoonPhase(date: Date)
 {
-  return moonPhases[Math.round(MoonPhase(date)/45)%8]!
+  return moonPhases[Math.round(Astronomy.MoonPhase(date)/45)%8]!
+}
+
+export function getMoonVisiblity(date: Date, observer: Observer)
+{
+  const moonRise = Astronomy.SearchRiseSet(Astronomy.Body.Moon, observer, -1, date, 1)
+  const moonSet = Astronomy.SearchRiseSet(Astronomy.Body.Moon, observer, 1, date, 1)
+  if (!moonRise || !moonSet) return false
+  return moonRise.date < moonSet.date
 }
 
 export const windScale = [

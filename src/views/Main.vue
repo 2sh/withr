@@ -28,6 +28,7 @@ import {
   determineUnits,
   distanceConversionMap,
   getMoonPhase,
+  getMoonVisiblity,
   getWindScale,
   owmKeyMapping,
   speedConverionMap,
@@ -274,15 +275,6 @@ function getValue<Type>(value: Type|Type[], index: number)
   return Array.isArray(value) ? value[index] : value
 }
 
-function getMoonVisiblity(date: Date)
-{
-  if (!astroObserver.value) return false
-  const moonRise = Astronomy.SearchRiseSet(Astronomy.Body.Moon, astroObserver.value, -1, date, 1)
-  const moonSet = Astronomy.SearchRiseSet(Astronomy.Body.Moon, astroObserver.value, 1, date, 1)
-  if (!moonRise || !moonSet) return false
-  return moonRise.date < moonSet.date
-}
-
 function addHalfHour(date: Date)
 {
   const newDate = new Date(date)
@@ -304,7 +296,8 @@ function getHour(object: WeatherDataHour|WeatherDataHourly, index = -1,
     uvIndexRiskMapping.findIndex(([v,_]) => uvIndex < v)-1]![1]
 
   const targetDate = contextIsFullHour ? addHalfHour(date) : date
-  const isMoonVisible = getMoonVisiblity(targetDate)
+  const isMoonVisible = !astroObserver.value
+    ? false : getMoonVisiblity(targetDate, astroObserver.value)
 
   const conditionKey = owmKeyMapping[weatherCode]!
   const moonPhase = getMoonPhase(targetDate)
