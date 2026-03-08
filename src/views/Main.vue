@@ -518,6 +518,7 @@ const options = ref({
         <RouterLink to="/45.19205,9.15917:Pavia">Pavia</RouterLink>
         <RouterLink to="/44.41344,12.20121:Ravenna">Ravenna</RouterLink>
         <RouterLink to="/45.51667,22.78333:Sarmizegetusa">Sarmizegetusa</RouterLink>
+        <RouterLink to="/41.0125,28.98:Constantinople">Constantinople</RouterLink>
         <RouterLink to="/44.60795,33.52134:Sevastopol">Sevastopol</RouterLink>
       </div>
     </div>
