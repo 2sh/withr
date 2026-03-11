@@ -1,10 +1,144 @@
-.theme-kiwi #current .image
-{
-  margin: 5px;
+:root[data-theme="kiwi"] {
+  color-scheme: dark;
+  --bg-color: #594461;
+  --box-color: #2b2b2b;
+  --bg-overlay: #28282b90;
+  --window-border: #ffffff;
+  --i-line-hover-color: #479e95;
+  --i-line-selected-color: #008477;
+  --extra-inline-color: rgb(255, 132, 132);
+  --intro-color: #bcf9b1;
+  --text-color: hsl(0, 0%, 94%);
+  --link-color: #a7caff;
+  --button-color: #593E48;
+  --button-color-hover: #9C7C75;
+  --notice-color: rgb(255, 193, 193);
+  --annotation-color: #979797;
+  --inverse: 0;
 }
 
-.theme-kiwi #current.clear .image,
-.theme-kiwi #current.mainly-clear .image
+.theme-kiwi #current .image
 {
-  background-image: url('../images/kiwi/SunFace.png')
+  margin: 0;
+}
+
+.theme-kiwi .hour .image
+{
+  margin: -5px;
+}
+
+.theme-kiwi .dow .image
+{
+  margin: 0;
+  width: 70px;
+}
+
+/* clear */
+
+.theme-kiwi .section.clear .image,
+.theme-kiwi .section.mainly-clear .image
+{
+  background-image:
+    url('../images/kiwi/SunFace.png');
+}
+
+.theme-kiwi .section.night.clear .image,
+.theme-kiwi .section.night.mainly-clear .image
+{
+  background-image:
+    url('../images/kiwi/Stars.png');
+}
+
+.theme-kiwi .section.night.moon.clear .image,
+.theme-kiwi .section.night.moon.mainly-clear .image
+{
+  background-image:
+    url('../images/kiwi/Moon.png');
+}
+
+/* cloudy */
+
+.theme-kiwi .section.cloudy .image
+{
+  background-image:
+    url('../images/kiwi/Cloudy.png'),
+    url('../images/kiwi/SunFace.png');
+}
+
+.theme-kiwi .section.night.cloudy .image
+{
+  background-image:
+    url('../images/kiwi/CloudyNight.png');
+}
+
+.theme-kiwi .section.night.moon.cloudy .image
+{
+  background-image:
+    url('../images/kiwi/Moon.png'),
+    url('../images/kiwi/Cloudy.png');
+}
+
+/* overcast */
+
+.theme-kiwi .section.overcast .image
+{
+  background-image:
+    url('../images/kiwi/overcast2.png');
+}
+
+.theme-kiwi .section.night.overcast .image
+{
+  background-image:
+    url('../images/kiwi/Cloud.png');
+}
+
+/* fog */
+
+.theme-kiwi .section.fog .image,
+.theme-kiwi .section.depositing-rime-fog .image
+{
+  background-image:
+    url('../images/kiwi/swirlycloud.png');
+}
+
+/* rain */
+
+.theme-kiwi .section.drizzle-light .image,
+.theme-kiwi .section.drizzle .image,
+.theme-kiwi .section.drizzle-dense .image,
+.theme-kiwi .section.freezing-drizzle-light .image,
+.theme-kiwi .section.freezing-drizzle-dense .image,
+.theme-kiwi .section.rain-slight .image,
+.theme-kiwi .section.rain .image,
+.theme-kiwi .section.rain-dense .image,
+.theme-kiwi .section.freezing-rain-light .image,
+.theme-kiwi .section.freezing-rain-dense .image,
+.theme-kiwi .section.rain-showers-slight .image,
+.theme-kiwi .section.rain-showers .image,
+.theme-kiwi .section.rain-showers-violent .image
+{
+  background-image:
+    url('../images/kiwi/Rain.png');
+}
+
+/* snow */
+
+.section.snow-slight .image,
+.section.snow .image,
+.section.snow-heavy .image,
+.section.snow-grains .image,
+.section.snow-showers-slight .image,
+.section.snow-showers-heavy .image
+{
+  background-image:
+    url('../images/kiwi/swirlycloud2.png');
+}
+
+/* thunderstorm */
+
+.section.thunderstorm .image,
+.section.thunderstorm-hail .image
+{
+  background-image:
+    url('../images/kiwi/Thunderstorm.png');
 }
