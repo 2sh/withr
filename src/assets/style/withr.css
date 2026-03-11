@@ -392,6 +392,8 @@
 {
   aspect-ratio: 1/1;
   background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 .section.clear .image,
