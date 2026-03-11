@@ -139,18 +139,68 @@ export const moonPhases = [
 
 import type { Observer } from "astronomy-engine"
 import * as Astronomy from "astronomy-engine"
+import type { HeavenlyBodyEvent } from "./types"
 
-export function getMoonPhase(date: Date)
+function getUtcDate(date: Date, offset: number)
 {
-  return moonPhases[Math.round(Astronomy.MoonPhase(date)/45)%8]!
+  const utcDate = new Date(date)
+  utcDate.setSeconds(utcDate.getSeconds() - offset)
+  return utcDate
 }
 
-export function getMoonVisiblity(date: Date, observer: Observer)
+export function getMoonPhase(date: Date, utcOffset = 0)
 {
-  const moonRise = Astronomy.SearchRiseSet(Astronomy.Body.Moon, observer, -1, date, 1)
-  const moonSet = Astronomy.SearchRiseSet(Astronomy.Body.Moon, observer, 1, date, 1)
+  const utcDate = getUtcDate(date, utcOffset)
+  return Astronomy.MoonPhase(utcDate)
+}
+
+export function toMoonPhaseKey(moonPhase: number)
+{
+  return moonPhases[Math.round(moonPhase/45)%8]!
+}
+
+export function getMoonVisiblity(date: Date, observer: Observer, utcOffset = 0)
+{
+  const utcDate = getUtcDate(date, utcOffset)
+  const moonRise = Astronomy.SearchRiseSet(Astronomy.Body.Moon, observer, +1, utcDate, 1)
+  const moonSet = Astronomy.SearchRiseSet(Astronomy.Body.Moon, observer, -1, utcDate, 1)
   if (!moonRise || !moonSet) return false
   return moonRise.date < moonSet.date
+}
+
+function getMoonEvents(from: Date, to: Date, observer: Observer, isSet = false): HeavenlyBodyEvent[]
+{
+  let date = from
+  const events = []
+  let i = 0
+  while (true)
+  {
+    if (i > 5) break
+    i++
+    const event = Astronomy.SearchRiseSet(
+      Astronomy.Body.Moon, observer, isSet ? -1 : +1, date, 1)
+    if (!event) break
+    date = new Date(event.date)
+    date.setMinutes(date.getMinutes() + 1)
+    if (to < date) break
+    events.push({ date: event.date, isSet })
+  }
+  return events
+}
+
+export function getMoonTimeline(from: Date, to: Date, observer: Observer,
+  utcOffset = 0)
+{
+  const utcFrom = getUtcDate(from, utcOffset)
+  const utcTo = getUtcDate(to, utcOffset)
+  const events = [
+    ...getMoonEvents(utcFrom, utcTo, observer, false),
+    ...getMoonEvents(utcFrom, utcTo, observer, true)
+  ]
+  events.sort((a, b) => a.date == b.date ? 0 : a.date < b.date ? -1 : 1)
+  if (utcOffset)
+    events.forEach(d => d.date.setSeconds(d.date.getSeconds() + utcOffset))
+  return events
 }
 
 export const windScale = [

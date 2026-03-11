@@ -13,7 +13,8 @@ import type {
   GothicNumeralMode,
   PrecipitationUnit,
   Theme,
-  WeatherDataDay
+  WeatherDataDay,
+  HeavenlyBodyEvent
 } from '../types'
 
 import {
@@ -29,11 +30,13 @@ import {
   determineUnits,
   distanceConversionMap,
   getMoonPhase,
+  getMoonTimeline,
   getMoonVisiblity,
   getWindScaleIndex,
   owmKeyMapping,
   speedConverionMap,
   temperatureConversionMap,
+  toMoonPhaseKey,
   uvIndexRiskMapping,
   windScale
 } from '../weather_tools'
@@ -252,15 +255,9 @@ function formatHour(hour: Date)
       ? toGothicValue(hours)
       : hours.toString().padStart(2, '0')
   }
-
-  const isPm = hours >= 12
   const h = (hours % 12) || 12
   const fh = getGothicValue(h)
-  const amPm = isPm ? t('ui.pm') : t('ui.am')
-  const fAmPm = !isGothicScript.value
-    ? amPm
-    : addOverlineHtml(amPm)
-  return fh + ' ' + fAmPm
+  return fh + ' ' + getAmPm(hour)
 }
 
 function formatDate(date: Date)
@@ -271,6 +268,55 @@ function formatDate(date: Date)
   return `${dom} ${monthName} ${year}`
 }
 
+function getAmPm(date: Date)
+{
+  const isPm = date.getHours() >= 12
+  const amPm = isPm ? t('ui.pm') : t('ui.am')
+  return !isGothicScript.value
+    ? amPm
+    : addOverlineHtml(amPm)
+}
+
+function get12Hour(hours: number)
+{
+  const h = (hours % 12) || 12
+  return actualGothicNumeralMode.value == 'none'
+    ? h : toGothicValue(h, 60, true)
+}
+
+function get24Hour(hours: number)
+{
+  return actualGothicNumeralMode.value == 'full'
+    ? toGothicValue(hours, 60, true)
+    : hours.toString().padStart(2, '0')
+}
+
+function formatTime(date: Date)
+{
+  const amPm = is24hour.value ? '' : ' ' + getAmPm(date)
+  if (actualGothicNumeralMode.value == 'full' ||
+    (!is24hour.value && actualGothicNumeralMode.value == 'mix'))
+  {
+    const timeValue = date.getHours() + date.getMinutes()/60
+    const time = is24hour.value ? get24Hour(timeValue) : get12Hour(timeValue)
+    return `${time}${amPm}`
+  }
+
+  const hours = is24hour.value ?
+    get24Hour(date.getHours()) : get12Hour(date.getHours())
+  const minutes = date.getMinutes().toString().padStart(2, '0')
+  return `${hours}:${minutes}${amPm}`
+}
+
+function formatHeavenlyBody(events: HeavenlyBodyEvent[])
+{
+  const formattedEvents: string[] = []
+  events.forEach(event =>
+  {
+    formattedEvents.push((event.isSet ? '↓' : '↑') + formatTime(event.date))
+  })
+  return formattedEvents.join(' ')
+}
 
 /* page data */
 
@@ -292,6 +338,20 @@ function getDays()
     const uvIndexMaxRisk = uvIndexRiskMapping[
       uvIndexRiskMapping.findIndex(([v,_]) => uvIndexMax < v)-1]![1]
 
+    const halfDay = new Date(date)
+    halfDay.setHours(12)
+    const moonPhase = getMoonPhase(halfDay)
+    const moonPhaseKey = toMoonPhaseKey(moonPhase)
+    const nextDay = new Date(date)
+    nextDay.setDate(nextDay.getDate()+1)
+    const sunEvents: HeavenlyBodyEvent[] = [
+      { isSet: false, date: new Date(data.value.daily.sunrise[i]!)},
+      { isSet: true, date: new Date(data.value.daily.sunset[i]!) }
+    ]
+    const moonEvents = !astroObserver.value ? [] :
+      getMoonTimeline(date, nextDay, astroObserver.value,
+        data.value.utc_offset_seconds)
+
     const classes = [
       conditionKey.replaceAll('_', '-'),
       windScaleKey.replaceAll('_', '-'),
@@ -308,8 +368,9 @@ function getDays()
       uvIndexMax: getGothicValue(uvIndexMax),
       uvIndexMaxRisk,
 
-      sunrise: '',
-      sunset: '',
+      sun: formatHeavenlyBody(sunEvents),
+      moon: formatHeavenlyBody(moonEvents),
+      moonPhaseKey,
       precipitationProbabilityMax: formatPrecipitation(data.value.daily.precipitation_probability_max[i]),
       humidityMin: formatPercentage(data.value.daily.relative_humidity_2m_min[i]),
       humidityMax: formatPercentage(data.value.daily.relative_humidity_2m_max[i]),
@@ -352,7 +413,7 @@ function getHour(object: WeatherDataHour|WeatherDataHourly, index = -1,
     ? false : getMoonVisiblity(targetDate, astroObserver.value)
 
   const conditionKey = owmKeyMapping[weatherCode]!
-  const moonPhase = getMoonPhase(targetDate)
+  const moonPhaseKey = toMoonPhaseKey(getMoonPhase(targetDate))
 
   const windSpeed = getValue(object.wind_speed_10m, index)
   const windScaleIndex = getWindScaleIndex(windSpeed!)
@@ -361,7 +422,7 @@ function getHour(object: WeatherDataHour|WeatherDataHourly, index = -1,
   const classes = [
     conditionKey.replaceAll('_', '-'),
     windScaleKey.replaceAll('_', '-'),
-    moonPhase.replaceAll('_', '-'),
+    moonPhaseKey.replaceAll('_', '-'),
   ]
 
   if (isMoonVisible) classes.push('moon')
@@ -621,6 +682,24 @@ const options = ref({
             <div>{{ $t("ui.humidity") }}</div>
             <div class="humidity">
               <span class="max-value" v-html="day.humidityMax"></span> <span v-html="day.humidityMin"></span>
+            </div>
+          </div>
+          <div>
+            <div>{{ $t("ui.sun") }}</div>
+            <div class="sun">
+              <span v-html="day.sun"></span>
+            </div>
+          </div>
+          <div>
+            <div>{{ $t("ui.moon") }}</div>
+            <div class="moon">
+              <span v-html="day.moon"></span>
+            </div>
+          </div>
+          <div>
+            <div>{{ $t("ui.moon_phase") }}</div>
+            <div class="moon-description">
+              <span>{{ $t('moonPhaseDescription.' + day.moonPhaseKey) }}</span>
             </div>
           </div>
         </div>

@@ -174,6 +174,22 @@ const windDescription: { [scale: string]: string } = {
   'hurricane': 'Skura abra',
 }
 
+const moonPhaseDescription: { [phase: string]: string } = {
+  'new_moon': 'Niujis mena',
+  // or Niujamena?
+  'waxing_crescent': 'Gilþa wahsjandei',
+  // or Gilþamena? sickle-moon, Sichelmond
+  'first_quarter': 'Halbs mena wahsjands',
+  // or Halbamena?
+  'waxing_gibbous': 'Mena wahsjands',
+  // or Þrifidurdo-dailamena "dreiviertelmond", awkward maybe
+  'full_moon': "Fulls mena",
+  // fullamena?
+  'waning_gibbous': 'Mena wanands',
+  'third_quarter': 'Halbs mena wanands',
+  'waning_crescent': 'Gilþa wanandei',
+} // *wanands from wanains
+
 const compassDirections =
   ["N", "NNA", "NA", "ANA",
    "A", "ASA", "SA", "SSA", // austra
@@ -206,6 +222,7 @@ export default {
   conditionDescription,
   windDescription,
   compassDirections,
+  moonPhaseDescription,
   tempSymbols,
   windSpeedSymbols,
   precipitationSymbols,
@@ -219,6 +236,9 @@ export default {
     precipitation: 'Mitadjo Rignis',
     uv_index: 'Wairþ UV',
     apparent_temp: 'Ufkunnaiþ',
+    sun: 'Sunno',
+    moon: 'Mena',
+    moon_phase: 'Griþs Menins',
     am: 'a.m.',
     pm: 'p.m.',
   }

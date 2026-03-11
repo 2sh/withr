@@ -106,7 +106,7 @@
 .data-section > div
 {
   text-align: center;
-  flex: 1 1 0px;
+  flex: 1 1 21%;
   background-color: var(--box-color);
   white-space: nowrap;
 }

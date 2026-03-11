@@ -67,8 +67,9 @@ export type WithrDay = {
 
   uvIndexMax: string,
   uvIndexMaxRisk: string,
-  sunrise: string,
-  sunset: string,
+  sun: string,
+  moon: string,
+  moonPhaseKey: string,
   precipitationProbabilityMax: string,
   humidityMin: string,
   humidityMax: string,
@@ -153,4 +154,9 @@ export type SearchResult = {
   name?: string,
   lat: number,
   long: number,
+}
+
+export type HeavenlyBodyEvent = {
+  isSet: boolean,
+  date: Date
 }
