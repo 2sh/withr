@@ -1,7 +1,8 @@
-:root[data-theme="kiwi"] {
+:root[data-theme="kiwi"]
+{
   color-scheme: dark;
   --bg-color: #594461;
-  --box-color: #2b2b2b;
+  --box-color: #443037;
   --bg-overlay: #28282b90;
   --window-border: #ffffff;
   --i-line-hover-color: #479e95;
