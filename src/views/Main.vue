@@ -107,6 +107,10 @@ const theme = useLocalStorage<Theme>('theme',
   ? 'light' : 'dark')
 )
 
+const themeCredits: {[themeKey: string]: string} = {
+  'kiwi': "Kiwiroo (2026)"
+}
+
 function setTheme()
 {
   document.documentElement.dataset.theme = theme.value
@@ -678,5 +682,14 @@ const options = ref({
   </div>
   <Search v-if="showSearch" @close="showSearch=false" @set="handleSetSearch"></Search>
   <Options v-if="showOptions" v-model="options" @close="handleCloseOptions"></Options>
+  <div id="footer" lang="en">
+    <div></div>
+    <div>
+      <span class="no-wrap">By <a href="https://2sh.me/gothic">2sh</a> (2026).</span>
+      <span class="no-wrap" v-if="themeCredits[theme]">Theme by <span v-html="themeCredits[theme]"></span>.</span>
+      <span class="no-wrap">Weather & Geolocation data by <a href="https://open-meteo.com/">Open-Meteo</a>.</span>
+      <br>Any location data is sent directly from your browser to Open-Meteo only.
+    </div>
+  </div>
 </div>
 </template>
