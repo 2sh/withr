@@ -18,6 +18,7 @@ import type {
 
 import {
   computed,
+  reactive,
   ref,
   watch,
   watchEffect,
@@ -48,7 +49,6 @@ const route = useRoute()
 
 import { useTranslation } from "i18next-vue";
 import { addOverlineHtml, toGothicValue } from '@/gothic_tools'
-import { setBodyClass } from '@/tools'
 const { i18next, t } = useTranslation();
 
 import * as Astronomy from "astronomy-engine"
@@ -66,6 +66,24 @@ const windSpeedUnit = useLocalStorage<SpeedUnit>('wind_speed_unit',
   determinedUnits.isImperial ? 'mph' : 'kmh')
 const precipitationUnit = useLocalStorage<PrecipitationUnit>('precipitation_unit',
   determinedUnits.isImperial ? 'inch' : 'mm')
+
+
+// manage body classes
+
+const bodyClasses = reactive<{ [prefix: string]: string[] }>({})
+
+watch(bodyClasses, () =>
+{
+  const classes: string[] = []
+  Object.entries(bodyClasses).forEach(([prefix, values]) =>
+  {
+    if (prefix.startsWith("_"))
+      classes.push(...values)
+    else
+      classes.push(...values.map(value => prefix + '-' + value))
+  })
+  document.body.className = classes.join(' ')
+})
 
 /* gothic script switch */
 
@@ -92,7 +110,7 @@ const theme = useLocalStorage<Theme>('theme',
 function setTheme()
 {
   document.documentElement.dataset.theme = theme.value
-  setBodyClass(theme.value, "theme-")
+  bodyClasses['theme'] = [theme.value]
 }
 watch(theme, setTheme)
 setTheme()
@@ -400,7 +418,7 @@ const hours = ref<WithrHour[]>([])
 watchEffect(() => { hours.value = getHours() })
 const current = computed(() => !data.value ? null : getHour(data.value.current))
 
-watch(current, c => document.body.className = !c ? '' : c.classes.join(' '))
+watch(current, c => bodyClasses["_current"] = !c ? [] : c.classes)
 
 /* routing */
 
