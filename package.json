@@ -1,8 +1,12 @@
 {
   "name": "withr",
-  "version": "1.0.0",
+  "version": "2.0.0",
+  "description": "The weather in Gothic language",
   "private": true,
   "type": "module",
+  "author": "2sh <git@2sh.me> (https://2sh.me)",
+  "contributors": [],
+  "license": "MPL-2.0",
   "scripts": {
     "dev": "vite",
     "build": "run-p type-check \"build-only {@}\" --",
