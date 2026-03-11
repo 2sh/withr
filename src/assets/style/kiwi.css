@@ -124,12 +124,12 @@
 
 /* snow */
 
-.section.snow-slight .image,
-.section.snow .image,
-.section.snow-heavy .image,
-.section.snow-grains .image,
-.section.snow-showers-slight .image,
-.section.snow-showers-heavy .image
+.theme-kiwi .section.snow-slight .image,
+.theme-kiwi .section.snow .image,
+.theme-kiwi .section.snow-heavy .image,
+.theme-kiwi .section.snow-grains .image,
+.theme-kiwi .section.snow-showers-slight .image,
+.theme-kiwi .section.snow-showers-heavy .image
 {
   background-image:
     url('../images/kiwi/swirlycloud2.png');
@@ -137,8 +137,8 @@
 
 /* thunderstorm */
 
-.section.thunderstorm .image,
-.section.thunderstorm-hail .image
+.theme-kiwi .section.thunderstorm .image,
+.theme-kiwi .section.thunderstorm-hail .image
 {
   background-image:
     url('../images/kiwi/Thunderstorm.png');
