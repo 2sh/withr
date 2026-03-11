@@ -280,8 +280,9 @@ function getAmPm(date: Date)
 function get12Hour(hours: number)
 {
   const h = (hours % 12) || 12
+  const h12 = Math.trunc(h) == 0 ? h + 12 : h
   return actualGothicNumeralMode.value == 'none'
-    ? h : toGothicValue(h, 60, true)
+    ? h12 : toGothicValue(h12, 60, true)
 }
 
 function get24Hour(hours: number)
