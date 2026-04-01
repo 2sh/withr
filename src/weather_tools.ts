@@ -126,42 +126,81 @@ export const uvIndexRiskMapping: [number, string][] = [
   [ 11, 'extreme' ],
 ]
 
+export const moonPhaseQuarters = [
+  'waxing_crescent',
+  'waxing_gibbous',
+  'waning_gibbous',
+  'waning_crescent',
+]
+
 export const moonPhases = [
   'new_moon',
-  'waxing_crescent',
   'first_quarter',
-  'waxing_gibbous',
   'full_moon',
-  'waning_gibbous',
   'third_quarter',
-  'waning_crescent',
 ]
 
 import type { Observer } from "astronomy-engine"
 import * as Astronomy from "astronomy-engine"
 import type { HeavenlyBodyEvent } from "./types"
 
-function getUtcDate(date: Date, offset: number)
+/*
+Enter a UTC offset to get the local date from a UTC date, and
+negate the UTC offset to get the UTC date from a local date.
+*/
+function getOffsetDate(date: Date, offset: number)
 {
-  const utcDate = new Date(date)
-  utcDate.setSeconds(utcDate.getSeconds() - offset)
-  return utcDate
+  const offsetDate = new Date(date)
+  offsetDate.setSeconds(offsetDate.getSeconds() + offset)
+  return offsetDate
 }
 
-export function getMoonPhase(date: Date, utcOffset = 0)
+function isSameDay(d1: Date, d2: Date)
 {
-  const utcDate = getUtcDate(date, utcOffset)
-  return Astronomy.MoonPhase(utcDate)
+  return d1.getFullYear() === d2.getFullYear()
+    && d1.getMonth() === d2.getMonth()
+    && d1.getDate() === d2.getDate()
 }
 
-export function toMoonPhaseKey(moonPhase: number)
+function isSameHour(d1: Date, d2: Date)
 {
-  return moonPhases[Math.round(moonPhase/45)%8]!
+  return d1.getHours() === d2.getHours()
 }
+
+export function getMoonState(date: Date, utcOffset = 0)
+{
+  const utcDate = getOffsetDate(date, -utcOffset)
+  const moonQuarter = Astronomy.SearchMoonQuarter(utcDate)
+  const longitude = Astronomy.MoonPhase(utcDate)
+  const next = getOffsetDate(moonQuarter.time.date, utcOffset)
+  const nextQuarter = moonQuarter.quarter
+  const quarter = Math.floor(longitude/90)%4
+  const isPeakDay = isSameDay(date, next)
+  const isPeakHour = isPeakDay && isSameHour(date, next)
+  const hourKey = isPeakHour
+    ? moonPhases[nextQuarter]!
+    : moonPhaseQuarters[quarter]!
+  const dayKey = isPeakDay
+    ? moonPhases[nextQuarter]!
+    : moonPhaseQuarters[quarter]!
+
+  return {
+    next,
+    nextQuarter,
+    isPeakDay,
+    isPeakHour,
+    hourKey,
+    dayKey,
+    longitude,
+    quarter,
+  }
+}
+
+export type MoonState = ReturnType<typeof getMoonState>
 
 export function getMoonVisiblity(date: Date, observer: Observer, utcOffset = 0)
 {
-  const utcDate = getUtcDate(date, utcOffset)
+  const utcDate = getOffsetDate(date, -utcOffset)
   const moonRise = Astronomy.SearchRiseSet(Astronomy.Body.Moon, observer, +1, utcDate, 1)
   const moonSet = Astronomy.SearchRiseSet(Astronomy.Body.Moon, observer, -1, utcDate, 1)
   if (!moonRise || !moonSet) return false
@@ -191,8 +230,8 @@ function getMoonEvents(from: Date, to: Date, observer: Observer, isSet = false):
 export function getMoonTimeline(from: Date, to: Date, observer: Observer,
   utcOffset = 0)
 {
-  const utcFrom = getUtcDate(from, utcOffset)
-  const utcTo = getUtcDate(to, utcOffset)
+  const utcFrom = getOffsetDate(from, -utcOffset)
+  const utcTo = getOffsetDate(to, -utcOffset)
   const events = [
     ...getMoonEvents(utcFrom, utcTo, observer, false),
     ...getMoonEvents(utcFrom, utcTo, observer, true)

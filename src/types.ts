@@ -1,3 +1,5 @@
+import type { MoonState } from "./weather_tools"
+
 type ArrayObject<Type> = {
   [Property in keyof Type]: Type[Property][]
 }
@@ -69,7 +71,7 @@ export type WithrDay = {
   uvIndexMaxRisk: string,
   sun: string,
   moon: string,
-  moonPhaseKey: string,
+  moonState: MoonState,
   precipitationProbabilityMax: string,
   humidityMin: string,
   humidityMax: string,

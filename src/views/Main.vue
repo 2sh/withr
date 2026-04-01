@@ -29,14 +29,13 @@ import {
   angleToCompassIndex,
   determineUnits,
   distanceConversionMap,
-  getMoonPhase,
+  getMoonState,
   getMoonTimeline,
   getMoonVisiblity,
   getWindScaleIndex,
   owmKeyMapping,
   speedConverionMap,
   temperatureConversionMap,
-  toMoonPhaseKey,
   uvIndexRiskMapping,
   windScale
 } from '../weather_tools'
@@ -339,10 +338,8 @@ function getDays()
     const uvIndexMaxRisk = uvIndexRiskMapping[
       uvIndexRiskMapping.findIndex(([v,_]) => uvIndexMax < v)-1]![1]
 
-    const halfDay = new Date(date)
-    halfDay.setHours(12)
-    const moonPhase = getMoonPhase(halfDay)
-    const moonPhaseKey = toMoonPhaseKey(moonPhase)
+    const moonState = getMoonState(date)
+
     const nextDay = new Date(date)
     nextDay.setDate(nextDay.getDate()+1)
     const sunEvents: HeavenlyBodyEvent[] = [
@@ -371,7 +368,7 @@ function getDays()
 
       sun: formatHeavenlyBody(sunEvents),
       moon: formatHeavenlyBody(moonEvents),
-      moonPhaseKey,
+      moonState,
       precipitationProbabilityMax: formatPrecipitation(data.value.daily.precipitation_probability_max[i]),
       humidityMin: formatPercentage(data.value.daily.relative_humidity_2m_min[i]),
       humidityMax: formatPercentage(data.value.daily.relative_humidity_2m_max[i]),
@@ -414,7 +411,8 @@ function getHour(object: WeatherDataHour|WeatherDataHourly, index = -1,
     ? false : getMoonVisiblity(targetDate, astroObserver.value)
 
   const conditionKey = owmKeyMapping[weatherCode]!
-  const moonPhaseKey = toMoonPhaseKey(getMoonPhase(targetDate))
+  const moonState = getMoonState(date)
+  const moonPhaseKey = moonState.hourKey
 
   const windSpeed = getValue(object.wind_speed_10m, index)
   const windScaleIndex = getWindScaleIndex(windSpeed!)
@@ -700,7 +698,8 @@ const options = ref({
           <div>
             <div>{{ $t("ui.moon_phase") }}</div>
             <div class="moon-description">
-              <span>{{ $t('moonPhaseDescription.' + day.moonPhaseKey) }}</span>
+              <span>{{ $t('moonPhaseDescription.' + day.moonState.dayKey) }}</span>
+              <span v-if="day.moonState.isPeakDay">(<span v-html="formatTime(day.moonState.next)"></span>)</span>
             </div>
           </div>
         </div>
