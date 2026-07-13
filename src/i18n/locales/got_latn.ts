@@ -229,7 +229,7 @@ export default {
 
   ui:
   {
-    weather_in_gothic: 'Wiþr in Gutrazdai',
+    weather_in_gothic: 'Widr in Gutrazdai',
     now_in: "Nū in",
     now: "Nū",
     humidity: 'Qrammiþa Luftaus',

@@ -1,4 +1,4 @@
-# Withr
+# Widr
 
 The weather in the Gothic language.
 

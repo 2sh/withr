@@ -1,10 +1,10 @@
 <script setup lang="ts">
 
 import type {
-  WithrOptions,
+  WidrOptions,
 } from '../types'
 
-const options = defineModel<WithrOptions>()
+const options = defineModel<WidrOptions>()
 const emit = defineEmits(['close'])
 
 </script>
@@ -34,7 +34,6 @@ const emit = defineEmits(['close'])
             <select v-model="options.theme">
               <option value="dark">Dark</option>
               <option value="light">Light</option>
-              <option value="kiwi">Kiwi</option>
             </select>
           </div>
         </div>

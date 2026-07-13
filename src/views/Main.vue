@@ -5,8 +5,8 @@ import type {
   WeatherDataHour,
   WeatherDataHourly,
   WithHourSimple,
-  WithrDay,
-  WithrHour,
+  WidrDay,
+  WidrHour,
   SearchResult,
   TempUnit,
   SpeedUnit,
@@ -110,7 +110,7 @@ const theme = useLocalStorage<Theme>('theme',
 )
 
 const themeCredits: {[themeKey: string]: string} = {
-  'kiwi': "Kiwiroo (2026)"
+
 }
 
 function setTheme()
@@ -324,7 +324,7 @@ function getDays()
 {
   if (!data.value) return []
 
-  const days: WithrDay[] = []
+  const days: WidrDay[] = []
   for (let i=0; i<7; i++)
   {
     const date = new Date(data.value.daily.time[i]! + 'T00:00:00')
@@ -463,7 +463,7 @@ function getHours()
   const startHour = selectedDayIndex.value == 0
     ? currentTime.value.getHours() : 0
 
-  const hours: WithrHour[] = []
+  const hours: WidrHour[] = []
   for (let i=startHour; i<24; i++)
   {
     const hourIndex = i + 24 * selectedDayIndex.value
@@ -478,7 +478,7 @@ function getHours()
 
 const days = computed(() => getDays())
 const day = computed(() => days.value[selectedDayIndex.value] || null )
-const hours = ref<WithrHour[]>([])
+const hours = ref<WidrHour[]>([])
 watchEffect(() => { hours.value = getHours() })
 const current = computed(() => !data.value ? null : getHour(data.value.current))
 

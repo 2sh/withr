@@ -58,7 +58,7 @@ export type LongShortNarrowName = {
   narrow: string,
 }
 
-export type WithrDay = {
+export type WidrDay = {
   title: string,
   formattedDate: string,
   tempMax: string,
@@ -107,7 +107,7 @@ export type WithHourSimple = {
   classes: string[],
 }
 
-export type WithrHour = {
+export type WidrHour = {
   title: string,
 } & WithHourSimple
 
@@ -138,9 +138,9 @@ export interface PrecipitationSymbols {
 }
 export type PrecipitationUnit = keyof PrecipitationSymbols
 
-export type Theme = 'dark' | 'light' | 'kiwi'
+export type Theme = 'dark' | 'light'
 
-export type WithrOptions = {
+export type WidrOptions = {
   isGothicScript: boolean,
   gothicNumeralMode: GothicNumeralMode,
   is24hour: boolean,
