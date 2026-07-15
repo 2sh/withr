@@ -37,8 +37,8 @@ const weekdays: LongShortNarrowName[] = [
     narrow: "F",
   },
   {
-    long: "Sambato",
-    short: "Sam",
+    long: "Sabbato daga",
+    short: "Sab",
     narrow: "S",
   },
 ]
